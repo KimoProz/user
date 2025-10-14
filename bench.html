@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mo7adraty - الفروع الدراسية</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>منصة محاضراتي - الفروع</title>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <style>
@@ -12,416 +11,174 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 50%, #059669 100%);
-            color: #ffffff;
+            background: #f8fafc;
+            color: #1f2937;
             min-height: 100vh;
-            overflow-x: hidden;
-        }
-        
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-        
-        .floating-shapes {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .shape {
-            position: absolute;
-            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            border-radius: 50%;
-            animation: float 8s ease-in-out infinite;
-        }
-        
-        .shape:nth-child(1) {
-            width: 400px;
-            height: 400px;
-            top: -100px;
-            right: -100px;
-            animation-delay: 0s;
-        }
-        
-        .shape:nth-child(2) {
-            width: 300px;
-            height: 300px;
-            bottom: -50px;
-            left: -50px;
-            animation-delay: 3s;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
-            50% { transform: translateY(-30px) rotate(180deg) scale(1.1); }
         }
         
         .header {
-            background: rgba(42, 42, 42, 0.8);
-            backdrop-filter: blur(20px);
+            background: white;
             padding: 20px 30px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             position: sticky;
             top: 0;
             z-index: 100;
         }
         
         .logo {
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             font-weight: bold;
-            background: linear-gradient(135deg, #ffffff, #10b981);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+            color: #1e3a8a;
+            text-align: center;
+            margin-bottom: 10px;
         }
         
         .nav-breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #cccccc;
-            flex-wrap: wrap;
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.9rem;
         }
         
         .breadcrumb-item {
-            transition: color 0.3s ease;
+            color: #1e3a8a;
             cursor: pointer;
         }
         
-        .breadcrumb-item:hover {
-            color: #10b981;
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px 20px;
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-        }
-        
-        .user-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #10b981, #047857);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
-        }
-        
-        .user-name {
-            font-weight: 600;
-            color: #ffffff;
-        }
-        
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 30px 20px;
         }
         
         .welcome-section {
-            background: rgba(42, 42, 42, 0.6);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 50px;
-            margin-bottom: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid #e5e7eb;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .welcome-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(16, 185, 129, 0.1), transparent);
-            transform: translateX(-100%);
-            animation: shimmer 3s infinite;
-        }
-        
-        @keyframes shimmer {
-            100% { transform: translateX(100%); }
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
         
         .welcome-title {
-            font-size: 2.8rem;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #ffffff, #10b981);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 800;
-        }
-        
-        .welcome-subtitle {
-            font-size: 1.3rem;
-            color: #cccccc;
-            opacity: 0.9;
-        }
-        
-        .content-section {
-            background: rgba(42, 42, 42, 0.6);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 50px;
-            margin-bottom: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-        }
-        
-        .section-title {
-            font-size: 2.2rem;
-            background: linear-gradient(135deg, #ffffff, #10b981);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #1e3a8a;
             font-weight: 700;
         }
         
-        .section-subtitle {
-            font-size: 1.2rem;
-            color: #cccccc;
-            margin-top: 10px;
-            opacity: 0.8;
+        .welcome-subtitle {
+            color: #6b7280;
+            font-size: 1.1rem;
         }
         
-        .auto-navigation {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 15px;
-            padding: 20px;
+        .content-section {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
             margin-bottom: 30px;
-            text-align: center;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
         
-        .auto-navigation-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            color: #10b981;
-        }
-        
-        .auto-navigation-icon {
+        .section-title {
             font-size: 1.5rem;
-        }
-        
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-        
-        .stat-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 20px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
-        }
-        
-        .stat-icon {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            color: #10b981;
-        }
-        
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-            background: linear-gradient(135deg, #ffffff, #10b981);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .stat-label {
-            font-size: 1rem;
-            color: #cccccc;
+            margin-bottom: 25px;
+            color: #1e3a8a;
+            font-weight: 600;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e5e7eb;
         }
         
         .items-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
         }
         
         .item-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 35px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            border: 2px solid #e5e7eb;
             transition: all 0.3s ease;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .item-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .item-card:hover::before {
-            opacity: 1;
         }
         
         .item-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 50px rgba(16, 185, 129, 0.3);
+            border-color: #1e3a8a;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(30, 58, 138, 0.15);
         }
         
         .item-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
-            background: linear-gradient(135deg, #10b981, #047857);
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: #1e3a8a;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 25px;
-            font-size: 2rem;
-            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            color: white;
         }
         
         .item-name {
-            font-size: 1.6rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #ffffff;
-            line-height: 1.3;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1f2937;
         }
         
         .item-description {
-            font-size: 1.1rem;
-            color: #cccccc;
-            margin-bottom: 20px;
-            line-height: 1.6;
-            opacity: 0.9;
-        }
-        
-        .item-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 1rem;
+            color: #6b7280;
+            margin-bottom: 15px;
+            line-height: 1.5;
         }
         
         .item-admin {
             font-size: 0.9rem;
-            color: #10b981;
+            color: #1e3a8a;
             display: flex;
             align-items: center;
             gap: 8px;
         }
         
-        .item-badges {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .badge {
-            background: rgba(16, 185, 129, 0.2);
-            color: #10b981;
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            border: 1px solid rgba(16, 185, 129, 0.3);
-        }
-        
         .empty-state {
             text-align: center;
-            padding: 80px;
-            color: #888;
+            padding: 60px;
+            color: #9ca3af;
             grid-column: 1 / -1;
         }
         
         .empty-icon {
-            font-size: 5rem;
-            margin-bottom: 25px;
-            color: #666;
-            opacity: 0.5;
-        }
-        
-        .empty-title {
-            font-size: 1.8rem;
+            font-size: 3rem;
             margin-bottom: 15px;
-            color: #cccccc;
-        }
-        
-        .empty-text {
-            font-size: 1.1rem;
-            color: #999;
+            opacity: 0.5;
         }
         
         .loading {
             text-align: center;
-            padding: 80px;
-            color: #888;
+            padding: 60px;
+            color: #9ca3af;
             grid-column: 1 / -1;
         }
         
         .loading-spinner {
-            width: 70px;
-            height: 70px;
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-top: 4px solid #10b981;
+            width: 50px;
+            height: 50px;
+            border: 3px solid #e5e7eb;
+            border-top: 3px solid #1e3a8a;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 25px;
+            margin: 0 auto 20px;
         }
         
         @keyframes spin {
@@ -429,164 +186,51 @@
             100% { transform: rotate(360deg); }
         }
         
-        .loading-text {
-            font-size: 1.2rem;
-            color: #cccccc;
-        }
-        
         footer {
-            background: rgba(10, 10, 10, 0.8);
-            padding: 40px;
+            background: #1f2937;
+            padding: 30px;
             text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 80px;
-            backdrop-filter: blur(10px);
+            margin-top: 50px;
         }
         
         .copyright {
-            color: #888;
-            font-size: 1rem;
-        }
-        
-        .fade-in {
-            animation: fadeInUp 0.8s ease-out;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px 15px;
-            }
-            
-            .welcome-section {
-                padding: 30px 20px;
-            }
-            
-            .welcome-title {
-                font-size: 2rem;
-            }
-            
-            .content-section {
-                padding: 30px 20px;
-            }
-            
-            .items-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .header {
-                padding: 15px 20px;
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .logo {
-                font-size: 1.8rem;
-            }
+            color: #d1d5db;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
-    <div class="bg-animation">
-        <div class="floating-shapes">
-            <div class="shape"></div>
-            <div class="shape"></div>
-        </div>
-    </div>
-    
     <div class="header">
-        <div class="logo">Mo7adraty</div>
+        <div class="logo">منصة محاضراتي</div>
         <div class="nav-breadcrumb">
-            <span class="breadcrumb-item" onclick="window.location.href='app.html'">
-                <i class="fas fa-home"></i> الرئيسية
-            </span>
-            <span><i class="fas fa-chevron-left"></i></span>
+            <span class="breadcrumb-item" onclick="window.location.href='app.html'">الرئيسية</span>
+            <span> › </span>
             <span class="breadcrumb-item" id="programLink">التطبيقات</span>
-            <span><i class="fas fa-chevron-left"></i></span>
-            <span class="breadcrumb-item">الفروع الدراسية</span>
-        </div>
-        <div class="user-info">
-            <div class="user-avatar">
-                <i class="fas fa-user"></i>
-            </div>
-            <div class="user-name" id="userName">مرحباً!</div>
+            <span> › </span>
+            <span>الفروع الدراسية</span>
         </div>
     </div>
     
     <div class="container">
-        <div class="welcome-section fade-in">
-            <h1 class="welcome-title" id="welcomeTitle">الفروع الدراسية</h1>
-            <p class="welcome-subtitle" id="welcomeSubtitle">استكشف الفروع المتاحة للمادة الدراسية</p>
+        <div class="welcome-section">
+            <h1 class="welcome-title">الفروع الدراسية</h1>
+            <p class="welcome-subtitle" id="welcomeSubtitle">اختر الفرع الذي تريد استعراض محتواه</p>
         </div>
         
-        <div class="content-section fade-in">
-            <div class="auto-navigation">
-                <div class="auto-navigation-content">
-                    <i class="fas fa-forward auto-navigation-icon"></i>
-                    <div>
-                        <strong>ملاحظة:</strong> في حالة عدم وجود فروع، سيتم توجيهك تلقائياً إلى صفحة الدكاترة
-                    </div>
-                </div>
-            </div>
-            
-            <div class="section-header">
-                <div>
-                    <h2 class="section-title">قائمة الفروع</h2>
-                    <p class="section-subtitle">اختر الفرع الذي تريد استعراض محتواه</p>
-                </div>
-            </div>
-            
-            <div class="stats">
-                <div class="stat-card fade-in">
-                    <div class="stat-icon">
-                        <i class="fas fa-code-branch"></i>
-                    </div>
-                    <div class="stat-number" id="branchesCount">0</div>
-                    <div class="stat-label">فرع دراسي</div>
-                </div>
-                
-                <div class="stat-card fade-in">
-                    <div class="stat-icon">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                    </div>
-                    <div class="stat-number" id="doctorsCount">0</div>
-                    <div class="stat-label">دكتور متخصص</div>
-                </div>
-                
-                <div class="stat-card fade-in">
-                    <div class="stat-icon">
-                        <i class="fas fa-file-pdf"></i>
-                    </div>
-                    <div class="stat-number" id="filesCount">0</div>
-                    <div class="stat-label">ملف تعليمي</div>
-                </div>
-            </div>
+        <div class="content-section">
+            <h2 class="section-title">قائمة الفروع</h2>
             
             <div id="branchesList" class="items-grid">
                 <div class="loading">
                     <div class="loading-spinner"></div>
-                    <div class="loading-text">جاري تحميل الفروع الدراسية...</div>
+                    <div>جاري تحميل الفروع الدراسية...</div>
                 </div>
             </div>
         </div>
     </div>
     
     <footer>
-        <div class="copyright">مطور الموقع شادو جميع الحقوق محفوظة 2025</div>
+        <div class="copyright">مطور الموقع شادو © 2025</div>
     </footer>
 
     <script>
@@ -605,9 +249,6 @@
         const programId = urlParams.get('program');
         const subjectId = urlParams.get('subject');
         
-        let currentProgram = null;
-        let currentSubject = null;
-        
         // التحقق من وجود بيانات المستخدم
         document.addEventListener('DOMContentLoaded', () => {
             const userName = localStorage.getItem('userName');
@@ -616,7 +257,6 @@
                 return;
             }
             
-            document.getElementById('userName').textContent = `مرحباً، ${userName}`;
             loadSubjectData();
         });
         
@@ -638,61 +278,18 @@
                     return;
                 }
                 
-                currentProgram = programSnapshot.val();
-                currentSubject = subjectSnapshot.val();
+                const currentProgram = programSnapshot.val();
+                const currentSubject = subjectSnapshot.val();
                 
-                document.getElementById('programLink').innerHTML = `<i class="fas fa-mobile-alt"></i> ${currentProgram.name}`;
-                document.getElementById('welcomeSubtitle').textContent = `إدارة فروع المادة - ${currentSubject.name}`;
+                document.getElementById('programLink').innerHTML = `${currentProgram.name}`;
+                document.getElementById('welcomeSubtitle').textContent = `المادة: ${currentSubject.name}`;
                 
                 loadBranches();
-                loadStats();
             })
             .catch((error) => {
                 console.error("خطأ في تحميل البيانات:", error);
                 window.location.href = 'app.html';
             });
-        }
-        
-        function loadStats() {
-            const database = firebase.database();
-            
-            database.ref('programs/' + programId + '/subjects/' + subjectId + '/branches').once('value')
-                .then((snapshot) => {
-                    const branches = snapshot.val();
-                    let branchesCount = 0;
-                    let doctorsCount = 0;
-                    let filesCount = 0;
-                    
-                    if (branches) {
-                        branchesCount = Object.keys(branches).length;
-                        
-                        Object.values(branches).forEach(branch => {
-                            if (branch.doctors) {
-                                doctorsCount += Object.keys(branch.doctors).length;
-                                
-                                Object.values(branch.doctors).forEach(doctor => {
-                                    if (doctor.files) {
-                                        filesCount += Object.keys(doctor.files).length;
-                                    }
-                                });
-                            }
-                        });
-                    }
-                    
-                    document.getElementById('branchesCount').textContent = branchesCount;
-                    document.getElementById('doctorsCount').textContent = doctorsCount;
-                    document.getElementById('filesCount').textContent = filesCount;
-                    
-                    // إذا لم يكن هناك فروع، انتقل مباشرة إلى الدكاترة
-                    if (branchesCount === 0) {
-                        setTimeout(() => {
-                            window.location.href = `dr.html?program=${programId}&subject=${subjectId}`;
-                        }, 2000);
-                    }
-                })
-                .catch((error) => {
-                    console.error("خطأ في تحميل الإحصائيات:", error);
-                });
         }
         
         function loadBranches() {
@@ -705,70 +302,39 @@
                     branchesList.innerHTML = '';
                     
                     if (!branches) {
-                        branchesList.innerHTML = `
-                            <div class="empty-state">
-                                <div class="empty-icon">
-                                    <i class="fas fa-code-branch"></i>
-                                </div>
-                                <h3 class="empty-title">لا توجد فروع دراسية</h3>
-                                <p class="empty-text">سيتم توجيهك تلقائياً إلى صفحة الدكاترة...</p>
-                            </div>
-                        `;
-                        
-                        // الانتقال التلقائي بعد 3 ثوان
+                        // إذا لم يكن هناك فروع، انتقل مباشرة إلى الدكاترة
                         setTimeout(() => {
                             window.location.href = `dr.html?program=${programId}&subject=${subjectId}`;
-                        }, 3000);
+                        }, 100);
                         return;
                     }
                     
-                    Object.entries(branches).forEach(([branchId, branch], index) => {
-                        setTimeout(() => {
-                            const branchCard = document.createElement('div');
-                            branchCard.className = 'item-card fade-in';
-                            branchCard.onclick = () => {
-                                window.location.href = `dr.html?program=${programId}&subject=${subjectId}&branch=${branchId}`;
-                            };
-                            
-                            const hasDoctors = branch.doctors && Object.keys(branch.doctors).length > 0;
-                            const doctorsCount = hasDoctors ? Object.keys(branch.doctors).length : 0;
-                            
-                            branchCard.innerHTML = `
-                                <div class="item-icon">
-                                    <i class="fas fa-code-branch"></i>
-                                </div>
-                                <div class="item-name">${branch.name}</div>
-                                <div class="item-description">${branch.description || 'لا يوجد وصف للفرع'}</div>
-                                <div class="item-meta">
-                                    <div class="item-admin">
-                                        <i class="fas fa-user-tie"></i>
-                                        ${branch.ad}
-                                    </div>
-                                    <div class="item-badges">
-                                        ${hasDoctors ? `<div class="badge"><i class="fas fa-users"></i> ${doctorsCount} دكتور</div>` : ''}
-                                    </div>
-                                </div>
-                            `;
-                            
-                            branchesList.appendChild(branchCard);
-                        }, index * 150);
+                    Object.entries(branches).forEach(([branchId, branch]) => {
+                        const branchCard = document.createElement('div');
+                        branchCard.className = 'item-card';
+                        branchCard.onclick = () => {
+                            window.location.href = `dr.html?program=${programId}&subject=${subjectId}&branch=${branchId}`;
+                        };
+                        
+                        branchCard.innerHTML = `
+                            <div class="item-icon">🌿</div>
+                            <div class="item-name">${branch.name}</div>
+                            <div class="item-description">${branch.description || 'لا يوجد وصف للفرع'}</div>
+                            <div class="item-admin">
+                                <span>👤</span>
+                                ${branch.ad}
+                            </div>
+                        `;
+                        
+                        branchesList.appendChild(branchCard);
                     });
                 })
                 .catch((error) => {
                     console.error("خطأ في تحميل الفروع:", error);
-                    branchesList.innerHTML = `
-                        <div class="empty-state">
-                            <div class="empty-icon">
-                                <i class="fas fa-exclamation-triangle"></i>
-                            </div>
-                            <h3 class="empty-title">حدث خطأ في تحميل الفروع</h3>
-                            <p class="empty-text">سيتم توجيهك إلى صفحة الدكاترة...</p>
-                        </div>
-                    `;
-                    
+                    // في حالة الخطأ، انتقل إلى الدكاترة
                     setTimeout(() => {
                         window.location.href = `dr.html?program=${programId}&subject=${subjectId}`;
-                    }, 3000);
+                    }, 100);
                 });
         }
         
@@ -783,6 +349,12 @@
         
         setInterval(updateLastActive, 60000);
         updateLastActive();
+        
+        // منع العودة لصفحة الاسم
+        window.history.pushState(null, null, window.location.href);
+        window.onpopstate = function() {
+            window.history.go(1);
+        };
     </script>
 </body>
 </html>
