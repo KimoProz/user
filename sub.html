@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mo7adraty - المواد الدراسية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 50%, #1e3a8a 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .shape {
+            position: absolute;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        .shape:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+        
+        .shape:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            bottom: -50px;
+            left: -50px;
+            animation-delay: 3s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            50% { transform: translateY(-30px) rotate(180deg) scale(1.1); }
+        }
+        
+        .header {
+            background: rgba(42, 42, 42, 0.8);
+            backdrop-filter: blur(20px);
+            padding: 20px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 2.2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ffffff, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 5px 15px rgba(96, 165, 250, 0.3);
+        }
+        
+        .nav-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #cccccc;
+        }
+        
+        .breadcrumb-item {
+            transition: color 0.3s ease;
+        }
+        
+        .breadcrumb-item:hover {
+            color: #60a5fa;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #60a5fa, #1d4ed8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(96, 165, 250, 0.3);
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #ffffff;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .welcome-section {
+            background: rgba(42, 42, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 50px;
+            margin-bottom: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(96, 165, 250, 0.1), transparent);
+            transform: translateX(-100%);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
+        }
+        
+        .welcome-title {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #ffffff, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+        
+        .welcome-subtitle {
+            font-size: 1.3rem;
+            color: #cccccc;
+            opacity: 0.9;
+        }
+        
+        .content-section {
+            background: rgba(42, 42, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 50px;
+            margin-bottom: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, #ffffff, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #cccccc;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(96, 165, 250, 0.2);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #60a5fa;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, #ffffff, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #cccccc;
+        }
+        
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 30px;
+        }
+        
+        .item-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .item-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .item-card:hover::before {
+            opacity: 1;
+        }
+        
+        .item-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(96, 165, 250, 0.3);
+        }
+        
+        .item-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #60a5fa, #1d4ed8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 2rem;
+            box-shadow: 0 10px 30px rgba(96, 165, 250, 0.3);
+        }
+        
+        .item-name {
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #ffffff;
+            line-height: 1.3;
+        }
+        
+        .item-description {
+            font-size: 1.1rem;
+            color: #cccccc;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        .item-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .item-admin {
+            font-size: 0.9rem;
+            color: #60a5fa;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .item-badges {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .badge {
+            background: rgba(96, 165, 250, 0.2);
+            color: #60a5fa;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 80px;
+            color: #888;
+            grid-column: 1 / -1;
+        }
+        
+        .empty-icon {
+            font-size: 5rem;
+            margin-bottom: 25px;
+            color: #666;
+            opacity: 0.5;
+        }
+        
+        .empty-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #cccccc;
+        }
+        
+        .empty-text {
+            font-size: 1.1rem;
+            color: #999;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 80px;
+            color: #888;
+            grid-column: 1 / -1;
+        }
+        
+        .loading-spinner {
+            width: 70px;
+            height: 70px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #60a5fa;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 25px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-size: 1.2rem;
+            color: #cccccc;
+        }
+        
+        footer {
+            background: rgba(10, 10, 10, 0.8);
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 80px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .copyright {
+            color: #888;
+            font-size: 1rem;
+        }
+        
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .welcome-section {
+                padding: 30px 20px;
+            }
+            
+            .welcome-title {
+                font-size: 2rem;
+            }
+            
+            .content-section {
+                padding: 30px 20px;
+            }
+            
+            .items-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .logo {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+    
+    <div class="header">
+        <div class="logo">Mo7adraty</div>
+        <div class="nav-breadcrumb">
+            <span class="breadcrumb-item" onclick="window.location.href='app.html'">
+                <i class="fas fa-home"></i> الرئيسية
+            </span>
+            <span><i class="fas fa-chevron-left"></i></span>
+            <span class="breadcrumb-item">المواد الدراسية</span>
+        </div>
+        <div class="user-info">
+            <div class="user-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="user-name" id="userName">مرحباً!</div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="welcome-section fade-in">
+            <h1 class="welcome-title" id="welcomeTitle">المواد الدراسية</h1>
+            <p class="welcome-subtitle" id="welcomeSubtitle">استكشف المواد الدراسية المتاحة واختر ما يناسبك</p>
+        </div>
+        
+        <div class="content-section fade-in">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">قائمة المواد</h2>
+                    <p class="section-subtitle">اختر المادة التي تريد استعراض محتواها</p>
+                </div>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-books"></i>
+                    </div>
+                    <div class="stat-number" id="subjectsCount">0</div>
+                    <div class="stat-label">مادة دراسية</div>
+                </div>
+                
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div class="stat-number" id="doctorsCount">0</div>
+                    <div class="stat-label">دكتور متخصص</div>
+                </div>
+                
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="stat-number" id="filesCount">0</div>
+                    <div class="stat-label">ملف تعليمي</div>
+                </div>
+                
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-code-branch"></i>
+                    </div>
+                    <div class="stat-number" id="branchesCount">0</div>
+                    <div class="stat-label">فرع دراسي</div>
+                </div>
+            </div>
+            
+            <div id="subjectsList" class="items-grid">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">جاري تحميل المواد الدراسية...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="copyright">مطور الموقع شادو جميع الحقوق محفوظة 2025</div>
+    </footer>
+
+    <script>
+        // تهيئة Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAoxrR7OvzDppT5LxYVoZTLCFvTeyDqPkQ",
+            authDomain: "mo7adraty-1636d.firebaseapp.com",
+            databaseURL: "https://mo7adraty-1636d-default-rtdb.firebaseio.com",
+            projectId: "mo7adraty-1636d",
+            storageBucket: "mo7adraty-1636d.firebasestorage.app"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const programId = urlParams.get('program');
+        
+        let currentProgram = null;
+        
+        // التحقق من وجود بيانات المستخدم
+        document.addEventListener('DOMContentLoaded', () => {
+            const userName = localStorage.getItem('userName');
+            if (!userName) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            document.getElementById('userName').textContent = `مرحباً، ${userName}`;
+            loadProgramData();
+        });
+        
+        function loadProgramData() {
+            if (!programId) {
+                window.location.href = 'app.html';
+                return;
+            }
+            
+            const database = firebase.database();
+            
+            database.ref('programs/' + programId).once('value')
+                .then((snapshot) => {
+                    if (!snapshot.exists()) {
+                        window.location.href = 'app.html';
+                        return;
+                    }
+                    
+                    currentProgram = snapshot.val();
+                    document.getElementById('welcomeSubtitle').textContent = `إدارة المواد الدراسية - ${currentProgram.name}`;
+                    loadSubjects();
+                    loadStats();
+                })
+                .catch((error) => {
+                    console.error("خطأ في تحميل بيانات التطبيق:", error);
+                    window.location.href = 'app.html';
+                });
+        }
+        
+        function loadStats() {
+            const database = firebase.database();
+            
+            database.ref('programs/' + programId + '/subjects').once('value')
+                .then((snapshot) => {
+                    const subjects = snapshot.val();
+                    let subjectsCount = 0;
+                    let doctorsCount = 0;
+                    let filesCount = 0;
+                    let branchesCount = 0;
+                    
+                    if (subjects) {
+                        subjectsCount = Object.keys(subjects).length;
+                        
+                        Object.values(subjects).forEach(subject => {
+                            // حساب الدكاترة
+                            if (subject.doctors) {
+                                doctorsCount += Object.keys(subject.doctors).length;
+                                
+                                // حساب الملفات
+                                Object.values(subject.doctors).forEach(doctor => {
+                                    if (doctor.files) {
+                                        filesCount += Object.keys(doctor.files).length;
+                                    }
+                                });
+                            }
+                            
+                            // حساب الفروع
+                            if (subject.branches) {
+                                branchesCount += Object.keys(subject.branches).length;
+                                
+                                Object.values(subject.branches).forEach(branch => {
+                                    if (branch.doctors) {
+                                        doctorsCount += Object.keys(branch.doctors).length;
+                                        
+                                        Object.values(branch.doctors).forEach(doctor => {
+                                            if (doctor.files) {
+                                                filesCount += Object.keys(doctor.files).length;
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    
+                    document.getElementById('subjectsCount').textContent = subjectsCount;
+                    document.getElementById('doctorsCount').textContent = doctorsCount;
+                    document.getElementById('filesCount').textContent = filesCount;
+                    document.getElementById('branchesCount').textContent = branchesCount;
+                })
+                .catch((error) => {
+                    console.error("خطأ في تحميل الإحصائيات:", error);
+                });
+        }
+        
+        function loadSubjects() {
+            const database = firebase.database();
+            const subjectsList = document.getElementById('subjectsList');
+            
+            database.ref('programs/' + programId + '/subjects').once('value')
+                .then((snapshot) => {
+                    const subjects = snapshot.val();
+                    subjectsList.innerHTML = '';
+                    
+                    if (!subjects) {
+                        subjectsList.innerHTML = `
+                            <div class="empty-state">
+                                <div class="empty-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <h3 class="empty-title">لا توجد مواد دراسية</h3>
+                                <p class="empty-text">سيتم إضافة المواد الدراسية قريباً</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    Object.entries(subjects).forEach(([subjectId, subject], index) => {
+                        setTimeout(() => {
+                            const subjectCard = document.createElement('div');
+                            subjectCard.className = 'item-card fade-in';
+                            subjectCard.onclick = () => {
+                                window.location.href = `bench.html?program=${programId}&subject=${subjectId}`;
+                            };
+                            
+                            const hasBranches = subject.branches && Object.keys(subject.branches).length > 0;
+                            const hasDoctors = subject.doctors && Object.keys(subject.doctors).length > 0;
+                            
+                            let badges = '';
+                            if (hasBranches) {
+                                badges += '<div class="badge"><i class="fas fa-code-branch"></i> فروع</div>';
+                            }
+                            if (hasDoctors) {
+                                badges += '<div class="badge"><i class="fas fa-users"></i> دكاترة</div>';
+                            }
+                            
+                            subjectCard.innerHTML = `
+                                <div class="item-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <div class="item-name">${subject.name}</div>
+                                <div class="item-description">${subject.description || 'لا يوجد وصف للمادة'}</div>
+                                <div class="item-meta">
+                                    <div class="item-admin">
+                                        <i class="fas fa-user-tie"></i>
+                                        ${subject.ad}
+                                    </div>
+                                    <div class="item-badges">
+                                        ${badges}
+                                    </div>
+                                </div>
+                            `;
+                            
+                            subjectsList.appendChild(subjectCard);
+                        }, index * 150);
+                    });
+                })
+                .catch((error) => {
+                    console.error("خطأ في تحميل المواد:", error);
+                    subjectsList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <h3 class="empty-title">حدث خطأ في تحميل المواد</h3>
+                            <p class="empty-text">يرجى تحديث الصفحة والمحاولة مرة أخرى</p>
+                        </div>
+                    `;
+                });
+        }
+        
+        // تحديث وقت النشاط الأخير
+        function updateLastActive() {
+            const userId = localStorage.getItem('userId');
+            if (userId) {
+                const database = firebase.database();
+                database.ref('users/' + userId + '/lastActive').set(new Date().toISOString());
+            }
+        }
+        
+        setInterval(updateLastActive, 60000);
+        updateLastActive();
+    </script>
+</body>
+</html>
