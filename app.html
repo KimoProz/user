@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mo7adraty - الرئيسية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 50%, #2d1b69 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* تأثيرات الخلفية */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .shape {
+            position: absolute;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        .shape:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+        
+        .shape:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            bottom: -50px;
+            left: -50px;
+            animation-delay: 3s;
+        }
+        
+        .shape:nth-child(3) {
+            width: 200px;
+            height: 200px;
+            top: 50%;
+            left: 10%;
+            animation-delay: 6s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            50% { transform: translateY(-30px) rotate(180deg) scale(1.1); }
+        }
+        
+        .header {
+            background: rgba(42, 42, 42, 0.8);
+            backdrop-filter: blur(20px);
+            padding: 20px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 2.2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ffffff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 5px 15px rgba(167, 139, 250, 0.3);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a78bfa, #7c3aed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(167, 139, 250, 0.3);
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #ffffff;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .welcome-section {
+            background: rgba(42, 42, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 50px;
+            margin-bottom: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(167, 139, 250, 0.1), transparent);
+            transform: translateX(-100%);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
+        }
+        
+        .welcome-title {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+        
+        .welcome-subtitle {
+            font-size: 1.3rem;
+            color: #cccccc;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(167, 139, 250, 0.2);
+        }
+        
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #a78bfa;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            color: #cccccc;
+        }
+        
+        .content-section {
+            background: rgba(42, 42, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 50px;
+            margin-bottom: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, #ffffff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #cccccc;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+        
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .item-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .item-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .item-card:hover::before {
+            opacity: 1;
+        }
+        
+        .item-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(167, 139, 250, 0.3);
+        }
+        
+        .item-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #a78bfa, #7c3aed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 2rem;
+            box-shadow: 0 10px 30px rgba(167, 139, 250, 0.3);
+        }
+        
+        .item-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+        
+        .item-description {
+            font-size: 1.1rem;
+            color: #cccccc;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        .item-admin {
+            font-size: 0.9rem;
+            color: #a78bfa;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: #888;
+            grid-column: 1 / -1;
+        }
+        
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #888;
+            grid-column: 1 / -1;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #a78bfa;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        footer {
+            background: rgba(10, 10, 10, 0.8);
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 80px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .copyright {
+            color: #888;
+            font-size: 1rem;
+        }
+        
+        /* تأثيرات دخول العناصر */
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* تأثيرات الاستجابة للهواتف */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .welcome-section {
+                padding: 30px 20px;
+            }
+            
+            .welcome-title {
+                font-size: 2.2rem;
+            }
+            
+            .content-section {
+                padding: 30px 20px;
+            }
+            
+            .items-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header {
+                padding: 15px 20px;
+            }
+            
+            .logo {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+    
+    <div class="header">
+        <div class="logo">Mo7adraty</div>
+        <div class="user-info">
+            <div class="user-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="user-name" id="userName">مرحباً!</div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="welcome-section fade-in">
+            <h1 class="welcome-title" id="welcomeTitle">مرحباً بك في منصة محاضراتي</h1>
+            <p class="welcome-subtitle">استكشف مجموعة واسعة من المحاضرات والمواد التعليمية المميزة</p>
+            
+            <div class="stats">
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <div class="stat-number" id="programsCount">0</div>
+                    <div class="stat-label">تطبيق تعليمي</div>
+                </div>
+                
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="stat-number" id="subjectsCount">0</div>
+                    <div class="stat-label">مادة دراسية</div>
+                </div>
+                
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number" id="doctorsCount">0</div>
+                    <div class="stat-label">دكتور متخصص</div>
+                </div>
+                
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="stat-number" id="filesCount">0</div>
+                    <div class="stat-label">ملف تعليمي</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-section fade-in">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">التطبيقات التعليمية</h2>
+                    <p class="section-subtitle">اختر التطبيق التعليمي المناسب لك وابدأ رحلة التعلم</p>
+                </div>
+            </div>
+            
+            <div id="appsList" class="items-grid">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <div>جاري تحميل التطبيقات...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="copyright">مطور الموقع شادو جميع الحقوق محفوظة 2025</div>
+    </footer>
+
+    <script>
+        // تهيئة Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAoxrR7OvzDppT5LxYVoZTLCFvTeyDqPkQ",
+            authDomain: "mo7adraty-1636d.firebaseapp.com",
+            databaseURL: "https://mo7adraty-1636d-default-rtdb.firebaseio.com",
+            projectId: "mo7adraty-1636d",
+            storageBucket: "mo7adraty-1636d.firebasestorage.app"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        
+        // التحقق من وجود بيانات المستخدم
+        document.addEventListener('DOMContentLoaded', () => {
+            const userName = localStorage.getItem('userName');
+            if (!userName) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            document.getElementById('userName').textContent = `مرحباً، ${userName}`;
+            document.getElementById('welcomeTitle').textContent = `مرحباً ${userName} في منصة محاضراتي`;
+            
+            loadApps();
+            loadStats();
+        });
+        
+        // تحميل الإحصائيات
+        function loadStats() {
+            const database = firebase.database();
+            
+            Promise.all([
+                database.ref('programs').once('value'),
+                database.ref('programs').once('value').then(snapshot => {
+                    let subjects = 0;
+                    let doctors = 0;
+                    let files = 0;
+                    
+                    const programs = snapshot.val();
+                    if (programs) {
+                        Object.values(programs).forEach(program => {
+                            if (program.subjects) {
+                                subjects += Object.keys(program.subjects).length;
+                                
+                                Object.values(program.subjects).forEach(subject => {
+                                    // حساب الدكاترة والملفات
+                                    if (subject.doctors) {
+                                        doctors += Object.keys(subject.doctors).length;
+                                        
+                                        Object.values(subject.doctors).forEach(doctor => {
+                                            if (doctor.files) {
+                                                files += Object.keys(doctor.files).length;
+                                            }
+                                        });
+                                    }
+                                    
+                                    // حساب الفروع
+                                    if (subject.branches) {
+                                        Object.values(subject.branches).forEach(branch => {
+                                            if (branch.doctors) {
+                                                doctors += Object.keys(branch.doctors).length;
+                                                
+                                                Object.values(branch.doctors).forEach(doctor => {
+                                                    if (doctor.files) {
+                                                        files += Object.keys(doctor.files).length;
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    
+                    return { subjects, doctors, files };
+                })
+            ])
+            .then(([programsSnapshot, counts]) => {
+                const programsCount = programsSnapshot.val() ? Object.keys(programsSnapshot.val()).length : 0;
+                
+                document.getElementById('programsCount').textContent = programsCount;
+                document.getElementById('subjectsCount').textContent = counts.subjects;
+                document.getElementById('doctorsCount').textContent = counts.doctors;
+                document.getElementById('filesCount').textContent = counts.files;
+            })
+            .catch((error) => {
+                console.error("خطأ في تحميل الإحصائيات:", error);
+            });
+        }
+        
+        // تحميل التطبيقات
+        function loadApps() {
+            const database = firebase.database();
+            const appsList = document.getElementById('appsList');
+            
+            database.ref('programs').once('value')
+                .then((snapshot) => {
+                    const programs = snapshot.val();
+                    appsList.innerHTML = '';
+                    
+                    if (!programs) {
+                        appsList.innerHTML = `
+                            <div class="empty-state">
+                                <div class="empty-icon">
+                                    <i class="fas fa-inbox"></i>
+                                </div>
+                                <h3>لا توجد تطبيقات حتى الآن</h3>
+                                <p>سيتم إضافة التطبيقات قريباً</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    Object.entries(programs).forEach(([programId, program], index) => {
+                        setTimeout(() => {
+                            const appCard = document.createElement('div');
+                            appCard.className = 'item-card fade-in';
+                            appCard.onclick = () => {
+                                window.location.href = `sub.html?program=${programId}`;
+                            };
+                            
+                            appCard.innerHTML = `
+                                <div class="item-icon">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                                <div class="item-name">${program.name}</div>
+                                <div class="item-description">${program.description || 'لا يوجد وصف'}</div>
+                                <div class="item-admin">
+                                    <i class="fas fa-user-tie"></i>
+                                    منشئ المحتوى: ${program.ad}
+                                </div>
+                            `;
+                            
+                            appsList.appendChild(appCard);
+                        }, index * 100);
+                    });
+                })
+                .catch((error) => {
+                    console.error("خطأ في تحميل التطبيقات:", error);
+                    appsList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <h3>حدث خطأ في تحميل التطبيقات</h3>
+                            <p>يرجى تحديث الصفحة والمحاولة مرة أخرى</p>
+                        </div>
+                    `;
+                });
+        }
+        
+        // تحديث وقت النشاط الأخير
+        function updateLastActive() {
+            const userId = localStorage.getItem('userId');
+            if (userId) {
+                const database = firebase.database();
+                database.ref('users/' + userId + '/lastActive').set(new Date().toISOString());
+            }
+        }
+        
+        // تحديث النشاط كل دقيقة
+        setInterval(updateLastActive, 60000);
+        updateLastActive();
+    </script>
+</body>
+</html>
