@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mo7adraty - ملفات PDF</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 50%, #dc2626 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .shape {
+            position: absolute;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        .shape:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+        
+        .shape:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            bottom: -50px;
+            left: -50px;
+            animation-delay: 3s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            50% { transform: translateY(-30px) rotate(180deg) scale(1.1); }
+        }
+        
+        .header {
+            background: rgba(42, 42, 42, 0.8);
+            backdrop-filter: blur(20px);
+            padding: 20px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 2.2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ffffff, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+        }
+        
+        .nav-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #cccccc;
+            flex-wrap: wrap;
+        }
+        
+        .breadcrumb-item {
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .breadcrumb-item:hover {
+            color: #ef4444;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #ffffff;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .welcome-section {
+            background: rgba(42, 42, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 50px;
+            margin-bottom: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(239, 68, 68, 0.1), transparent);
+            transform: translateX(-100%);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
+        }
+        
+        .welcome-title {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #ffffff, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+        
+        .welcome-subtitle {
+            font-size: 1.3rem;
+            color: #cccccc;
+            opacity: 0.9;
+        }
+        
+        .content-section {
+            background: rgba(42, 42, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 50px;
+            margin-bottom: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, #ffffff, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #cccccc;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.2);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #ef4444;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, #ffffff, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #cccccc;
+        }
+        
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 30px;
+        }
+        
+        .item-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .item-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .item-card:hover::before {
+            opacity: 1;
+        }
+        
+        .item-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(239, 68, 68, 0.3);
+        }
+        
+        .item-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 2rem;
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);
+        }
+        
+        .item-name {
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #ffffff;
+            line-height: 1.3;
+        }
+        
+        .item-description {
+            font-size: 1.1rem;
+            color: #cccccc;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        .item-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .item-admin {
+            font-size: 0.9rem;
+            color: #ef4444;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+        }
+        
+        .download-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 80px;
+            color: #888;
+            grid-column: 1 / -1;
+        }
+        
+        .empty-icon {
+            font-size: 5rem;
+            margin-bottom: 25px;
+            color: #666;
+            opacity: 0.5;
+        }
+        
+        .empty-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #cccccc;
+        }
+        
+        .empty-text {
+            font-size: 1.1rem;
+            color: #999;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 80px;
+            color: #888;
+            grid-column: 1 / -1;
+        }
+        
+        .loading-spinner {
+            width: 70px;
+            height: 70px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #ef4444;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 25px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-size: 1.2rem;
+            color: #cccccc;
+        }
+        
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .overlay-spinner {
+            width: 80px;
+            height: 80px;
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-top: 5px solid #ef4444;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        .overlay-text {
+            color: #ffffff;
+            font-size: 1.3rem;
+        }
+        
+        footer {
+            background: rgba(10, 10, 10, 0.8);
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 80px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .copyright {
+            color: #888;
+            font-size: 1rem;
+        }
+        
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .welcome-section {
+                padding: 30px 20px;
+            }
+            
+            .welcome-title {
+                font-size: 2rem;
+            }
+            
+            .content-section {
+                padding: 30px 20px;
+            }
+            
+            .items-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .logo {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+    
+    <div class="header">
+        <div class="logo">Mo7adraty</div>
+        <div class="nav-breadcrumb">
+            <span class="breadcrumb-item" onclick="window.location.href='app.html'">
+                <i class="fas fa-home"></i> الرئيسية
+            </span>
+            <span><i class="fas fa-chevron-left"></i></span>
+            <span class="breadcrumb-item" id="programLink">التطبيقات</span>
+            <span><i class="fas fa-chevron-left"></i></span>
+            <span class="breadcrumb-item" id="subjectLink">المواد</span>
+            <span><i class="fas fa-chevron-left"></i></span>
+            <span class="breadcrumb-item" id="doctorLink">الدكاترة</span>
+        </div>
+        <div class="user-info">
+            <div class="user-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="user-name" id="userName">مرحباً!</div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="welcome-section fade-in">
+            <h1 class="welcome-title" id="welcomeTitle">ملفات PDF</h1>
+            <p class="welcome-subtitle" id="welcomeSubtitle">استكشف الملفات التعليمية المتاحة</p>
+        </div>
+        
+        <div class="content-section fade-in">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">الملفات المتاحة</h2>
+                    <p class="section-subtitle">اختر الملف الذي تريد تحميله</p>
+                </div>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="stat-number" id="filesCount">0</div>
+                    <div class="stat-label">ملف تعليمي</div>
+                </div>
+            </div>
+            
+            <div id="pdfList" class="items-grid">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">جاري تحميل الملفات...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- نافذة التحميل -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="overlay-spinner"></div>
+        <div class="overlay-text">جاري معالجة الرابط...</div>
+    </div>
+    
+    <footer>
+        <div class="copyright">مطور الموقع شادو جميع الحقوق محفوظة 2025</div>
+    </footer>
+
+    <script>
+        // تهيئة Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAoxrR7OvzDppT5LxYVoZTLCFvTeyDqPkQ",
+            authDomain: "mo7adraty-1636d.firebaseapp.com",
+            databaseURL: "https://mo7adraty-1636d-default-rtdb.firebaseio.com",
+            projectId: "mo7adraty-1636d",
+            storageBucket: "mo7adraty-1636d.firebasestorage.app"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const programId = urlParams.get('program');
+        const subjectId = urlParams.get('subject');
+        const branchId = urlParams.get('branch');
+        const doctorId = urlParams.get('doctor');
+        
+        let currentProgram = null;
+        let currentSubject = null;
+        let currentBranch = null;
+        let currentDoctor = null;
+        
+        // التحقق من وجود بيانات المستخدم
+        document.addEventListener('DOMContentLoaded', () => {
+            const userName = localStorage.getItem('userName');
+            if (!userName) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            document.getElementById('userName').textContent = `مرحباً، ${userName}`;
+            loadDoctorData();
+        });
+        
+        function loadDoctorData() {
+            if (!programId || !subjectId || !doctorId) {
+                window.location.href = 'app.html';
+                return;
+            }
+            
+            const database = firebase.database();
+            
+            const promises = [
+                database.ref('programs/' + programId).once('value'),
+                database.ref('programs/' + programId + '/subjects/' + subjectId).once('value')
+            ];
+            
+            if (branchId) {
+                promises.push(
+                    database.ref('programs/' + programId + '/subjects/' + subjectId + '/branches/' + branchId).once('value'),
+                    database.ref('programs/' + programId + '/subjects/' + subjectId + '/branches/' + branchId + '/doctors/' + doctorId).once('value')
+                );
+            } else {
+                promises.push(
+                    database.ref('programs/' + programId + '/subjects/' + subjectId + '/doctors/' + doctorId).once('value')
+                );
+            }
+            
+            Promise.all(promises)
+            .then((results) => {
+                const programSnapshot = results[0];
+                const subjectSnapshot = results[1];
+                
+                if (!programSnapshot.exists() || !subjectSnapshot.exists()) {
+                    window.location.href = 'app.html';
+                    return;
+                }
+                
+                currentProgram = programSnapshot.val();
+                currentSubject = subjectSnapshot.val();
+                
+                document.getElementById('programLink').innerHTML = `<i class="fas fa-mobile-alt"></i> ${currentProgram.name}`;
+                document.getElementById('subjectLink').innerHTML = `<i class="fas fa-book"></i> ${currentSubject.name}`;
+                
+                if (branchId) {
+                    const branchSnapshot = results[2];
+                    const branchDoctorSnapshot = results[3];
+                    
+                    if (!branchSnapshot.exists() || !branchDoctorSnapshot.exists()) {
+                        window.location.href = 'app.html';
+                        return;
+                    }
+                    
+                    currentBranch = branchSnapshot.val();
+                    currentDoctor = branchDoctorSnapshot.val();
+                    document.getElementById('subjectLink').innerHTML += ` - ${currentBranch.name}`;
+                } else {
+                    const doctorSnapshot = results[2];
+                    
+                    if (!doctorSnapshot.exists()) {
+                        window.location.href = 'app.html';
+                        return;
+                    }
+                    
+                    currentDoctor = doctorSnapshot.val();
+                }
+                
+                document.getElementById('doctorLink').innerHTML = `<i class="fas fa-user-md"></i> ${currentDoctor.name}`;
+                document.getElementById('welcomeSubtitle').textContent = `ملفات الدكتور - ${currentDoctor.name}`;
+                
+                loadPdfs();
+                loadStats();
+            })
+            .catch((error) => {
+                console.error("خطأ في تحميل البيانات:", error);
+                window.location.href = 'app.html';
+            });
+        }
+        
+        function loadStats() {
+            const database = firebase.database();
+            
+            let refPath;
+            if (branchId) {
+                refPath = `programs/${programId}/subjects/${subjectId}/branches/${branchId}/doctors/${doctorId}/files`;
+            } else {
+                refPath = `programs/${programId}/subjects/${subjectId}/doctors/${doctorId}/files`;
+            }
+            
+            database.ref(refPath).once('value')
+                .then((snapshot) => {
+                    const files = snapshot.val();
+                    const filesCount = files ? Object.keys(files).length : 0;
+                    
+                    document.getElementById('filesCount').textContent = filesCount;
+                })
+                .catch((error) => {
+                    console.error("خطأ في تحميل الإحصائيات:", error);
+                });
+        }
+        
+        function loadPdfs() {
+            const database = firebase.database();
+            const pdfList = document.getElementById('pdfList');
+            
+            let refPath;
+            if (branchId) {
+                refPath = `programs/${programId}/subjects/${subjectId}/branches/${branchId}/doctors/${doctorId}/files`;
+            } else {
+                refPath = `programs/${programId}/subjects/${subjectId}/doctors/${doctorId}/files`;
+            }
+            
+            database.ref(refPath).once('value')
+                .then((snapshot) => {
+                    const pdfs = snapshot.val();
+                    pdfList.innerHTML = '';
+                    
+                    if (!pdfs) {
+                        pdfList.innerHTML = `
+                            <div class="empty-state">
+                                <div class="empty-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <h3 class="empty-title">لا توجد ملفات</h3>
+                                <p class="empty-text">سيتم إضافة الملفات قريباً</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    Object.entries(pdfs).forEach(([pdfId, pdf], index) => {
+                        setTimeout(() => {
+                            const pdfCard = document.createElement('div');
+                            pdfCard.className = 'item-card fade-in';
+                            
+                            pdfCard.innerHTML = `
+                                <div class="item-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <div class="item-name">${pdf.name}</div>
+                                <div class="item-description">${pdf.description || 'لا يوجد وصف للملف'}</div>
+                                <div class="item-meta">
+                                    <div class="item-admin">
+                                        <i class="fas fa-user-tie"></i>
+                                        ${pdf.ad}
+                                    </div>
+                                    <button class="download-btn" data-url="${pdf.url}">
+                                        <i class="fas fa-download"></i>
+                                        تحميل
+                                    </button>
+                                </div>
+                            `;
+                            
+                            pdfList.appendChild(pdfCard);
+                            
+                            // إضافة مستمع الحدث لزر التحميل
+                            const downloadBtn = pdfCard.querySelector('.download-btn');
+                            downloadBtn.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                const pdfUrl = downloadBtn.getAttribute('data-url');
+                                handlePdfDownload(pdfUrl);
+                            });
+                        }, index * 150);
+                    });
+                })
+                .catch((error) => {
+                    console.error("خطأ في تحميل ملفات PDF:", error);
+                    pdfList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <h3 class="empty-title">حدث خطأ في تحميل الملفات</h3>
+                            <p class="empty-text">يرجى تحديث الصفحة والمحاولة مرة أخرى</p>
+                        </div>
+                    `;
+                });
+        }
+        
+        // معالجة تحميل ملف PDF
+        function handlePdfDownload(pdfUrl) {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            
+            const apiUrl = `https://script.google.com/macros/s/AKfycbzlpPlYUeDgsaq0Gb6A6Yxj78E0E7LZbQ3en6hIhIvPrax1URjCeIZ2ptV1mrYlYahC5w/exec?url=${encodeURIComponent(pdfUrl)}`;
+            
+            fetch(apiUrl)
+                .then(response => response.text())
+                .then(result => {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                    
+                    if (result.includes('发生错误，请联系开发者 KIMO')) {
+                        alert('رابط التحميل غير صالح. يرجى التواصل مع المسؤول.');
+                    } else {
+                        // فتح الرابط في نافذة جديدة
+                        window.open(result, '_blank');
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                    console.error("خطأ في معالجة الرابط:", error);
+                    alert('حدث خطأ أثناء معالجة الرابط. يرجى المحاولة مرة أخرى.');
+                });
+        }
+        
+        // تحديث وقت النشاط الأخير
+        function updateLastActive() {
+            const userId = localStorage.getItem('userId');
+            if (userId) {
+                const database = firebase.database();
+                database.ref('users/' + userId + '/lastActive').set(new Date().toISOString());
+            }
+        }
+        
+        setInterval(updateLastActive, 60000);
+        updateLastActive();
+    </script>
+</body>
+</html>
