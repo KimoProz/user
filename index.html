@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mo7adraty - مرحباً</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>منصة محاضراتي</title>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <style>
@@ -12,138 +11,49 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 50%, #2d1b69 100%);
-            color: #ffffff;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            color: #1f2937;
             min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-        
-        /* تأثيرات الخلفية */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-        
-        .floating-shapes {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .shape {
-            position: absolute;
-            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        .shape:nth-child(1) {
-            width: 300px;
-            height: 300px;
-            top: 10%;
-            left: 5%;
-            animation-delay: 0s;
-        }
-        
-        .shape:nth-child(2) {
-            width: 200px;
-            height: 200px;
-            top: 60%;
-            right: 10%;
-            animation-delay: 2s;
-        }
-        
-        .shape:nth-child(3) {
-            width: 150px;
-            height: 150px;
-            bottom: 20%;
-            left: 15%;
-            animation-delay: 4s;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
+            display: flex;
+            flex-direction: column;
         }
         
         .container {
             max-width: 500px;
             margin: 0 auto;
             padding: 20px;
-            min-height: 100vh;
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            z-index: 1;
         }
         
         .welcome-card {
-            background: rgba(42, 42, 42, 0.8);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
+            background: white;
+            border-radius: 20px;
             padding: 50px 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
-                        0 0 0 1px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
             width: 100%;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transform: translateY(0);
-            transition: all 0.3s ease;
-            animation: cardEntrance 1s ease-out;
-        }
-        
-        .welcome-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6),
-                        0 0 0 1px rgba(255, 255, 255, 0.2);
-        }
-        
-        @keyframes cardEntrance {
-            from {
-                opacity: 0;
-                transform: translateY(50px) scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            border: 1px solid #e5e7eb;
         }
         
         .logo {
-            font-size: 3.5rem;
+            font-size: 2.5rem;
             font-weight: bold;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #ffffff, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 5px 15px rgba(167, 139, 250, 0.3);
+            margin-bottom: 10px;
+            color: #1e3a8a;
         }
         
         .welcome-title {
-            font-size: 2.2rem;
-            margin-bottom: 15px;
-            color: #ffffff;
-            font-weight: 700;
-        }
-        
-        .welcome-text {
-            font-size: 1.1rem;
-            margin-bottom: 40px;
-            color: #cccccc;
-            line-height: 1.6;
-            opacity: 0.9;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: #374151;
+            font-weight: 600;
         }
         
         .form-group {
@@ -153,209 +63,85 @@
         
         label {
             display: block;
-            margin-bottom: 12px;
-            color: #ffffff;
-            font-weight: 600;
+            margin-bottom: 10px;
+            color: #374151;
+            font-weight: 500;
             font-size: 1.1rem;
-        }
-        
-        .input-wrapper {
-            position: relative;
         }
         
         input {
             width: 100%;
-            padding: 18px 20px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
+            padding: 15px 20px;
+            border: 2px solid #d1d5db;
+            border-radius: 12px;
+            background: #f9fafb;
+            color: #1f2937;
             font-size: 1.1rem;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
         }
         
         input:focus {
             outline: none;
-            border-color: #a78bfa;
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 20px rgba(167, 139, 250, 0.3);
-        }
-        
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+            border-color: #1e3a8a;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
         }
         
         .btn {
-            background: linear-gradient(135deg, #a78bfa, #7c3aed);
+            background: #1e3a8a;
             color: white;
             border: none;
-            padding: 18px 40px;
-            border-radius: 15px;
+            padding: 16px 30px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 1.2rem;
-            font-weight: bold;
+            font-size: 1.1rem;
+            font-weight: 600;
             transition: all 0.3s ease;
             width: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-        
-        .btn:hover::before {
-            left: 100%;
         }
         
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(167, 139, 250, 0.4);
+            background: #3730a3;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(30, 58, 138, 0.3);
         }
         
-        .btn:active {
-            transform: translateY(-1px);
-        }
-        
-        .features {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-top: 40px;
-        }
-        
-        .feature {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .feature:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-5px);
-        }
-        
-        .feature i {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            color: #a78bfa;
-        }
-        
-        .feature-text {
-            font-size: 0.9rem;
-            color: #cccccc;
+        .btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
         
         footer {
-            background: rgba(10, 10, 10, 0.8);
+            background: #1f2937;
             padding: 25px;
             text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 50px;
-            backdrop-filter: blur(10px);
         }
         
         .copyright {
-            color: #888;
+            color: #d1d5db;
             font-size: 0.9rem;
-        }
-        
-        /* تأثيرات دخول النص */
-        .animate-text {
-            animation: textGlow 2s ease-in-out infinite alternate;
-        }
-        
-        @keyframes textGlow {
-            from {
-                text-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
-            }
-            to {
-                text-shadow: 0 0 30px rgba(167, 139, 250, 0.8),
-                             0 0 40px rgba(167, 139, 250, 0.6);
-            }
-        }
-        
-        /* تأثيرات الاستجابة للهواتف */
-        @media (max-width: 768px) {
-            .welcome-card {
-                padding: 40px 25px;
-                margin: 20px;
-            }
-            
-            .logo {
-                font-size: 2.8rem;
-            }
-            
-            .welcome-title {
-                font-size: 1.8rem;
-            }
-            
-            .features {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
 <body>
-    <div class="bg-animation">
-        <div class="floating-shapes">
-            <div class="shape"></div>
-            <div class="shape"></div>
-            <div class="shape"></div>
-        </div>
-    </div>
-    
     <div class="container">
         <div class="welcome-card">
-            <div class="logo animate-text">Mo7adraty</div>
-            <h1 class="welcome-title">مرحباً بك في منصة محاضراتي</h1>
-            <p class="welcome-text">منصة تعليمية متكاملة توفر لك أفضل المحاضرات والمواد الدراسية بطريقة مبتكرة وسهلة</p>
+            <div class="logo">محاضراتي</div>
+            <h1 class="welcome-title">مرحباً بك في المنصة التعليمية</h1>
             
             <div class="form-group">
                 <label for="userName">أدخل اسمك للبدء</label>
-                <div class="input-wrapper">
-                    <input type="text" id="userName" placeholder="اكتب اسمك هنا..." autocomplete="off">
-                </div>
+                <input type="text" id="userName" placeholder="اكتب اسمك هنا...">
             </div>
             
-            <button id="startBtn" class="btn">
-                <i class="fas fa-rocket"></i> ابدأ الرحلة التعليمية
-            </button>
-            
-            <div class="features">
-                <div class="feature">
-                    <i class="fas fa-graduation-cap"></i>
-                    <div class="feature-text">محاضرات متنوعة</div>
-                </div>
-                <div class="feature">
-                    <i class="fas fa-book-open"></i>
-                    <div class="feature-text">مواد شاملة</div>
-                </div>
-                <div class="feature">
-                    <i class="fas fa-download"></i>
-                    <div class="feature-text">تحميل سهل</div>
-                </div>
-                <div class="feature">
-                    <i class="fas fa-star"></i>
-                    <div class="feature-text">جودة عالية</div>
-                </div>
-            </div>
+            <button id="startBtn" class="btn">بدء الاستخدام</button>
         </div>
     </div>
     
     <footer>
-        <div class="copyright">مطور الموقع شادو جميع الحقوق محفوظة 2025</div>
+        <div class="copyright">مطور الموقع شادو © 2025</div>
     </footer>
 
     <script>
@@ -395,11 +181,8 @@
                 lastActive: new Date().toISOString()
             })
             .then(() => {
-                // حفظ في localStorage للاستخدام في الصفحات الأخرى
                 localStorage.setItem('userName', userName);
                 localStorage.setItem('userId', userId);
-                
-                // الانتقال إلى الصفحة الرئيسية
                 window.location.href = 'app.html';
             })
             .catch((error) => {
@@ -422,9 +205,8 @@
                 return;
             }
             
-            // إضافة تأثير تحميل للزر
             const btn = document.getElementById('startBtn');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحميل...';
+            btn.innerHTML = 'جاري التحميل...';
             btn.disabled = true;
             
             saveUserData(userName);
@@ -437,24 +219,11 @@
             }
         });
         
-        // تأثيرات إضافية عند التحميل
-        document.addEventListener('DOMContentLoaded', () => {
-            // تأثير كتابة للعنوان
-            const title = document.querySelector('.welcome-title');
-            const text = title.textContent;
-            title.textContent = '';
-            
-            let i = 0;
-            const typeWriter = () => {
-                if (i < text.length) {
-                    title.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, 100);
-                }
-            };
-            
-            setTimeout(typeWriter, 1000);
-        });
+        // منع العودة لصفحة الاسم
+        window.history.pushState(null, null, window.location.href);
+        window.onpopstate = function() {
+            window.history.go(1);
+        };
     </script>
 </body>
 </html>
