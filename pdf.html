@@ -9,32 +9,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #304FFE;
-            --primary-light: #536DFE;
-            --primary-dark: #1A237E;
-            --primary-darker: #0D1440;
+            --primary: #A1001A;
+            --primary-light: #C2182B;
+            --primary-dark: #7A0014;
             --text: #1f2937;
             --text-light: #6b7280;
-            --bg: #f8fafc;
-            --card-bg: rgba(255, 255, 255, 0.85);
-            --card-border: rgba(48, 79, 254, 0.15);
+            --bg: #FFFFFF;
+            --card-bg: rgba(255, 255, 255, 0.98);
+            --card-border: rgba(161, 0, 26, 0.15);
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            --glow: 0 0 30px rgba(48, 79, 254, 0.4);
             --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .dark-mode {
-            --primary: #304FFE;
-            --primary-light: #536DFE;
-            --primary-dark: #1A237E;
-            --primary-darker: #0D1440;
-            --text: #f9fafb;
-            --text-light: #d1d5db;
-            --bg: #0a0f2b;
-            --card-bg: rgba(13, 20, 64, 0.7);
-            --card-border: rgba(48, 79, 254, 0.3);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            --glow: 0 0 40px rgba(48, 79, 254, 0.6);
         }
 
         * {
@@ -57,141 +41,37 @@
         }
 
         body {
-            background: linear-gradient(135deg, var(--bg) 0%, var(--primary-darker) 100%);
+            background-color: var(--bg);
             color: var(--text);
             min-height: 100vh;
             transition: var(--transition);
             overflow-x: hidden;
         }
 
-        .dark-mode body {
-            background: linear-gradient(135deg, var(--bg) 0%, var(--primary-darker) 100%);
-        }
-
-        /* تأثيرات الخلفية المتقدمة */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            opacity: 0.8;
-        }
-
         .bg-grid {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(48, 79, 254, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(48, 79, 254, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
-        }
-
-        .bg-circles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .bg-circle {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(60px);
-            opacity: 0.5;
-            animation: float 25s infinite ease-in-out;
-        }
-
-        .circle-1 {
-            width: 500px;
-            height: 500px;
-            top: 10%;
-            right: 10%;
-            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
-            animation-delay: 0s;
-        }
-
-        .circle-2 {
-            width: 600px;
-            height: 600px;
-            bottom: 10%;
-            left: 10%;
-            background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%);
-            animation-delay: 8s;
-        }
-
-        .circle-3 {
-            width: 400px;
-            height: 400px;
-            top: 50%;
-            left: 20%;
-            background: radial-gradient(circle, var(--primary-dark) 0%, transparent 70%);
-            animation-delay: 16s;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) scale(1) rotate(0deg);
-            }
-            33% {
-                transform: translateY(-40px) scale(1.1) rotate(5deg);
-            }
-            66% {
-                transform: translateY(30px) scale(0.9) rotate(-5deg);
-            }
-        }
-
-        /* تأثيرات الجسيمات */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+                linear-gradient(rgba(161, 0, 26, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(161, 0, 26, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
             z-index: -1;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            background: var(--primary);
-            border-radius: 50%;
-            opacity: 0.4;
-            animation: particle-float 20s infinite linear;
-        }
-
-        @keyframes particle-float {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.4;
-            }
-            90% {
-                opacity: 0.4;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
+            opacity: 0.5;
         }
 
         .header {
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(10px);
             padding: 25px 30px;
             border-bottom: 1px solid var(--card-border);
             box-shadow: var(--shadow);
             position: sticky;
             top: 0;
             z-index: 100;
+            animation: slideDown 0.8s ease-out;
         }
         
         .logo {
@@ -226,19 +106,21 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 30px 20px;
+            animation: fadeIn 0.8s ease-out;
         }
         
         .welcome-section {
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 50px 40px;
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
             margin-bottom: 30px;
             border: 1px solid var(--card-border);
             text-align: center;
             box-shadow: var(--shadow);
             position: relative;
             overflow: hidden;
+            animation: cardAppear 0.8s ease-out 0.2s both;
         }
 
         .welcome-section::before {
@@ -252,7 +134,7 @@
         }
         
         .welcome-title {
-            font-size: 2.2rem;
+            font-size: 2rem;
             margin-bottom: 15px;
             color: var(--text);
             font-weight: 700;
@@ -265,17 +147,18 @@
         
         .content-section {
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 40px;
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
             margin-bottom: 30px;
             border: 1px solid var(--card-border);
             box-shadow: var(--shadow);
+            animation: cardAppear 0.8s ease-out 0.4s both;
         }
         
         .section-title {
-            font-size: 1.8rem;
-            margin-bottom: 30px;
+            font-size: 1.6rem;
+            margin-bottom: 25px;
             color: var(--primary);
             font-weight: 700;
             padding-bottom: 15px;
@@ -293,67 +176,75 @@
             background: linear-gradient(90deg, var(--primary), transparent);
         }
         
-        .items-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 25px;
+        .files-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
         
-        .item-card {
+        .file-card {
             background: var(--card-bg);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px 25px;
+            border-radius: 16px;
+            padding: 25px;
             border: 1px solid var(--card-border);
             transition: var(--transition);
             position: relative;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            animation: slideInRight 0.6s ease-out both;
         }
 
-        .item-card::before {
+        .file-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-dark), var(--primary), var(--primary-light));
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-dark), var(--primary), var(--primary-light));
         }
         
-        .item-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow), var(--glow);
+        .file-card:hover {
+            transform: translateX(-8px);
+            box-shadow: 0 6px 20px rgba(161, 0, 26, 0.2);
         }
         
-        .item-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 16px;
+        .file-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 14px;
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: white;
-            box-shadow: 0 8px 20px rgba(48, 79, 254, 0.3);
+            box-shadow: 0 4px 15px rgba(161, 0, 26, 0.3);
+            flex-shrink: 0;
         }
         
-        .item-name {
-            font-size: 1.4rem;
+        .file-content {
+            flex: 1;
+        }
+        
+        .file-name {
+            font-size: 1.3rem;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             color: var(--text);
         }
         
-        .item-description {
-            font-size: 1.1rem;
+        .file-description {
+            font-size: 1rem;
             color: var(--text-light);
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             line-height: 1.5;
         }
         
-        .item-meta {
+        .file-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -362,15 +253,15 @@
             border-top: 1px solid var(--card-border);
         }
         
-        .item-admin {
-            font-size: 1rem;
+        .file-admin {
+            font-size: 0.9rem;
             color: var(--primary);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
         
-        .download-btn {
+        .file-btn {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             border: none;
@@ -383,38 +274,47 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 15px rgba(48, 79, 254, 0.3);
+            box-shadow: 0 4px 15px rgba(161, 0, 26, 0.3);
+            min-width: 120px;
+            justify-content: center;
         }
         
-        .download-btn:hover {
+        .file-btn:hover {
             background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(48, 79, 254, 0.4);
+            box-shadow: 0 6px 20px rgba(161, 0, 26, 0.4);
         }
 
-        .download-btn:disabled {
+        .file-btn:disabled {
             background: linear-gradient(135deg, #9ca3af, #6b7280);
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
+
+        .file-btn.loading {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .file-btn.view {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
         
         .empty-state, .loading {
             text-align: center;
-            padding: 60px;
+            padding: 50px;
             color: var(--text-light);
-            grid-column: 1 / -1;
         }
         
         .empty-icon {
-            font-size: 4rem;
+            font-size: 3.5rem;
             margin-bottom: 20px;
             opacity: 0.5;
         }
         
         .loading-spinner {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border: 4px solid var(--card-border);
             border-top: 4px solid var(--primary);
             border-radius: 50%;
@@ -422,195 +322,77 @@
             margin: 0 auto 20px;
         }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* نافذة الانتظار */
-        .loading-dialog {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-        }
-        
-        .loading-dialog-content {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 400px;
-            width: 90%;
-            text-align: center;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--card-border);
-            position: relative;
-        }
-
-        .loading-dialog-content::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: linear-gradient(90deg, var(--primary-dark), var(--primary), var(--primary-light));
-            border-radius: 20px 20px 0 0;
-        }
-        
-        .loading-spinner-large {
-            width: 80px;
-            height: 80px;
-            border: 6px solid var(--card-border);
-            border-top: 6px solid var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 25px;
-        }
-        
-        .loading-dialog-title {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: var(--text);
-            font-weight: 700;
-        }
-        
-        .loading-dialog-message {
-            color: var(--text-light);
-            line-height: 1.5;
-        }
-        
-        /* نافذة الخطأ */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(5px);
-        }
-        
-        .modal {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 400px;
-            width: 90%;
-            text-align: center;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--card-border);
-            position: relative;
-        }
-
-        .modal::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: linear-gradient(90deg, var(--primary-dark), var(--primary), var(--primary-light));
-            border-radius: 20px 20px 0 0;
-        }
-        
-        .modal-title {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: var(--text);
-            font-weight: 700;
-        }
-        
-        .modal-message {
-            color: var(--text-light);
-            margin-bottom: 30px;
-            line-height: 1.5;
-        }
-        
-        .modal-actions {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-        
-        .modal-btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-            flex: 1;
-        }
-        
-        .modal-btn.cancel {
-            background: var(--text-light);
-            color: white;
-        }
-        
-        .modal-btn.open {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-        }
-        
-        .modal-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--card-border);
-            border-radius: 50%;
-            width: 55px;
-            height: 55px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: var(--shadow);
-            z-index: 1000;
-        }
-
-        .theme-toggle:hover {
-            transform: rotate(180deg) scale(1.1);
-            box-shadow: var(--glow);
-        }
-
-        .theme-toggle i {
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-        
         footer {
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            padding: 25px;
+            backdrop-filter: blur(10px);
+            padding: 20px;
             text-align: center;
             border-top: 1px solid var(--card-border);
+            animation: slideUp 0.8s ease-out 0.6s both;
         }
         
         .copyright {
             color: var(--text-light);
-            font-size: 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* تحسينات للشاشات الصغيرة */
@@ -620,104 +402,84 @@
             }
             
             .welcome-section {
-                padding: 40px 25px;
+                padding: 30px 20px;
             }
             
             .content-section {
-                padding: 30px 25px;
-            }
-            
-            .items-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .item-card {
                 padding: 25px 20px;
             }
             
-            .item-meta {
+            .file-card {
+                padding: 20px;
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .file-card::before {
+                width: 100%;
+                height: 4px;
+            }
+            
+            .file-card:hover {
+                transform: translateY(-5px);
+            }
+            
+            .file-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 1.8rem;
+            }
+            
+            .file-meta {
                 flex-direction: column;
                 gap: 15px;
                 align-items: flex-start;
             }
             
-            .download-btn {
+            .file-btn {
                 width: 100%;
-                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 20px 15px;
             }
             
-            .modal-actions {
-                flex-direction: column;
+            .logo {
+                font-size: 1.8rem;
             }
             
-            .theme-toggle {
-                top: 15px;
-                left: 15px;
-                width: 50px;
-                height: 50px;
+            .welcome-title {
+                font-size: 1.6rem;
             }
-
-            .bg-circle {
-                filter: blur(40px);
+            
+            .welcome-subtitle {
+                font-size: 1rem;
             }
-        }
-
-        /* تحسينات للشاشات المتوسطة */
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .items-grid {
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            
+            .section-title {
+                font-size: 1.4rem;
             }
-        }
-
-        /* تحسينات للشاشات الكبيرة */
-        @media (min-width: 1025px) {
-            .container {
-                max-width: 1400px;
+            
+            .file-name {
+                font-size: 1.2rem;
             }
-        }
-
-        /* تأثيرات دخول الصفحة */
-        .welcome-section, .content-section {
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        .item-card {
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            
+            .file-description {
+                font-size: 0.95rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="bg-animation">
-        <div class="bg-grid"></div>
-        <div class="bg-circles">
-            <div class="bg-circle circle-1"></div>
-            <div class="bg-circle circle-2"></div>
-            <div class="bg-circle circle-3"></div>
-        </div>
-    </div>
-
-    <div class="particles" id="particles"></div>
-
-    <div class="theme-toggle" id="themeToggle">
-        <i class="fas fa-moon"></i>
-    </div>
+    <div class="bg-grid"></div>
 
     <div class="header">
         <div class="logo">منصة محاضراتي</div>
         <div class="nav-breadcrumb">
-            <span class="breadcrumb-item" onclick="window.location.href='app.html'">الرئيسية</span>
+            <span class="breadcrumb-item" onclick="window.location.href='index.html'">الرئيسية</span>
             <span> › </span>
             <span class="breadcrumb-item" id="programLink">التطبيقات</span>
             <span> › </span>
@@ -738,32 +500,11 @@
         <div class="content-section">
             <h2 class="section-title">الملفات المتاحة</h2>
             
-            <div id="pdfList" class="items-grid">
+            <div id="filesList" class="files-container">
                 <div class="loading">
                     <div class="loading-spinner"></div>
                     <div>جاري تحميل الملفات...</div>
                 </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- نافذة الانتظار -->
-    <div id="loadingDialog" class="loading-dialog">
-        <div class="loading-dialog-content">
-            <div class="loading-spinner-large"></div>
-            <h3 class="loading-dialog-title">جاري التحميل</h3>
-            <p class="loading-dialog-message">يرجى الانتظار أثناء معالجة الملف...</p>
-        </div>
-    </div>
-    
-    <!-- نافذة الخطأ -->
-    <div id="errorModal" class="modal-overlay">
-        <div class="modal">
-            <h3 class="modal-title">حدث خطأ</h3>
-            <p class="modal-message" id="errorMessage">حدث خطأ في تشغيل الرابط</p>
-            <div class="modal-actions">
-                <button class="modal-btn cancel" onclick="closeErrorModal()">إلغاء</button>
-                <button class="modal-btn open" onclick="openOriginalUrl()">فتح الرابط الأصلي</button>
             </div>
         </div>
     </div>
@@ -790,78 +531,9 @@
         const branchId = urlParams.get('branch');
         const doctorId = urlParams.get('doctor');
         
-        let currentOriginalUrl = '';
-        let currentDownloadBtn = null;
-        
-        // إنشاء جسيمات متحركة
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 25;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                // حجم عشوائي
-                const size = Math.random() * 12 + 8;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                
-                // تدرج اللون الأزرق
-                const opacity = Math.random() * 0.5 + 0.3;
-                particle.style.background = `rgba(48, 79, 254, ${opacity})`;
-                
-                // موقع عشوائي
-                const left = Math.random() * 100;
-                particle.style.left = `${left}%`;
-                
-                // تأخير عشوائي للحركة
-                const delay = Math.random() * 20;
-                particle.style.animationDelay = `${delay}s`;
-                
-                particlesContainer.appendChild(particle);
-            }
-        }
-        
-        // تبديل الوضع الداكن/الفاتح
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = themeToggle.querySelector('i');
-        
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            document.body.classList.add('dark-mode');
-            themeIcon.classList.remove('fa-moon');
-            themeIcon.classList.add('fa-sun');
-        }
-        
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            
-            if (document.body.classList.contains('dark-mode')) {
-                localStorage.setItem('darkMode', 'enabled');
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-            } else {
-                localStorage.setItem('darkMode', 'disabled');
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-            }
-        });
-
-        // التحقق من وجود بيانات المستخدم
-        document.addEventListener('DOMContentLoaded', () => {
-            const userName = localStorage.getItem('userName');
-            if (!userName) {
-                window.location.href = 'index.html';
-                return;
-            }
-            
-            createParticles();
-            loadDoctorData();
-        });
-        
         function loadDoctorData() {
             if (!programId || !subjectId || !doctorId) {
-                window.location.href = 'app.html';
+                window.location.href = 'index.html';
                 return;
             }
             
@@ -889,7 +561,7 @@
                 const subjectSnapshot = results[1];
                 
                 if (!programSnapshot.exists() || !subjectSnapshot.exists()) {
-                    window.location.href = 'app.html';
+                    window.location.href = 'index.html';
                     return;
                 }
                 
@@ -904,7 +576,7 @@
                     const branchDoctorSnapshot = results[3];
                     
                     if (!branchSnapshot.exists() || !branchDoctorSnapshot.exists()) {
-                        window.location.href = 'app.html';
+                        window.location.href = 'index.html';
                         return;
                     }
                     
@@ -917,7 +589,7 @@
                     const doctorSnapshot = results[2];
                     
                     if (!doctorSnapshot.exists()) {
-                        window.location.href = 'app.html';
+                        window.location.href = 'index.html';
                         return;
                     }
                     
@@ -926,17 +598,17 @@
                     document.getElementById('welcomeSubtitle').textContent = `ملفات الدكتور: ${currentDoctor.name}`;
                 }
                 
-                loadPdfs();
+                loadFiles();
             })
             .catch((error) => {
                 console.error("خطأ في تحميل البيانات:", error);
-                window.location.href = 'app.html';
+                window.location.href = 'index.html';
             });
         }
         
-        function loadPdfs() {
+        function loadFiles() {
             const database = firebase.database();
-            const pdfList = document.getElementById('pdfList');
+            const filesList = document.getElementById('filesList');
             
             let refPath;
             if (branchId) {
@@ -947,11 +619,11 @@
             
             database.ref(refPath).once('value')
                 .then((snapshot) => {
-                    const pdfs = snapshot.val();
-                    pdfList.innerHTML = '';
+                    const files = snapshot.val();
+                    filesList.innerHTML = '';
                     
-                    if (!pdfs) {
-                        pdfList.innerHTML = `
+                    if (!files) {
+                        filesList.innerHTML = `
                             <div class="empty-state">
                                 <div class="empty-icon">📁</div>
                                 <h3>لا توجد ملفات</h3>
@@ -962,51 +634,60 @@
                     }
                     
                     // تحويل الكائن إلى مصفوفة وترتيبها حسب التاريخ (الأحدث أولاً)
-                    const pdfsArray = Object.entries(pdfs);
+                    const filesArray = Object.entries(files);
                     
                     // إذا كان هناك حقل timestamp نستخدمه للترتيب، وإلا نستخدم ترتيب الإضافة
-                    pdfsArray.sort(([, pdfA], [, pdfB]) => {
-                        const timeA = pdfA.timestamp || pdfA.dateAdded || 0;
-                        const timeB = pdfB.timestamp || pdfB.dateAdded || 0;
+                    filesArray.sort(([, fileA], [, fileB]) => {
+                        const timeA = fileA.timestamp || fileA.dateAdded || 0;
+                        const timeB = fileB.timestamp || fileB.dateAdded || 0;
                         return timeB - timeA; // الأحدث أولاً
                     });
                     
-                    pdfsArray.forEach(([pdfId, pdf], index) => {
-                        const pdfCard = document.createElement('div');
-                        pdfCard.className = 'item-card';
-                        pdfCard.style.animationDelay = `${index * 0.1}s`;
-                        
-                        pdfCard.innerHTML = `
-                            <div class="item-icon">📁</div>
-                            <div class="item-name">${pdf.name}</div>
-                            <div class="item-description">${pdf.description || 'لا يوجد وصف للملف'}</div>
-                            <div class="item-meta">
-                                <div class="item-admin">
-                                    <span>👤</span>
-                                    ${pdf.ad}
+                    filesArray.forEach(([fileId, file], index) => {
+                        setTimeout(() => {
+                            const fileCard = document.createElement('div');
+                            fileCard.className = 'file-card';
+                            fileCard.style.animationDelay = `${index * 0.1}s`;
+                            
+                            // تحديد نوع الزر بناءً على الرابط
+                            const isMediafire = file.url.includes('mediafire.com');
+                            const buttonText = isMediafire ? 'تحميل الملف' : 'عرض الصورة';
+                            const buttonIcon = isMediafire ? '📥' : '👁️';
+                            
+                            fileCard.innerHTML = `
+                                <div class="file-icon">📁</div>
+                                <div class="file-content">
+                                    <div class="file-name">${file.name}</div>
+                                    <div class="file-description">${file.description || 'لا يوجد وصف للملف'}</div>
+                                    <div class="file-meta">
+                                        <div class="file-admin">
+                                            <span>👤</span>
+                                            ${file.ad}
+                                        </div>
+                                        <button class="file-btn ${isMediafire ? '' : 'view'}" data-url="${file.url}" data-type="${isMediafire ? 'download' : 'view'}">
+                                            <span>${buttonIcon}</span>
+                                            ${buttonText}
+                                        </button>
+                                    </div>
                                 </div>
-                                <button class="download-btn" data-url="${pdf.url}">
-                                    <span>📥</span>
-                                    تحميل
-                                </button>
-                            </div>
-                        `;
-                        
-                        pdfList.appendChild(pdfCard);
-                        
-                        // إضافة مستمع الحدث لزر التحميل
-                        const downloadBtn = pdfCard.querySelector('.download-btn');
-                        downloadBtn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            const pdfUrl = downloadBtn.getAttribute('data-url');
-                            currentDownloadBtn = downloadBtn;
-                            handleFileDownload(pdfUrl);
-                        });
+                            `;
+                            
+                            filesList.appendChild(fileCard);
+                            
+                            // إضافة مستمع الحدث لزر التحميل/العرض
+                            const fileBtn = fileCard.querySelector('.file-btn');
+                            fileBtn.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                const fileUrl = fileBtn.getAttribute('data-url');
+                                const fileType = fileBtn.getAttribute('data-type');
+                                handleFileAction(fileUrl, fileType, fileBtn);
+                            });
+                        }, index * 100);
                     });
                 })
                 .catch((error) => {
                     console.error("خطأ في تحميل الملفات:", error);
-                    pdfList.innerHTML = `
+                    filesList.innerHTML = `
                         <div class="empty-state">
                             <div class="empty-icon">⚠️</div>
                             <h3>حدث خطأ في تحميل الملفات</h3>
@@ -1016,36 +697,35 @@
                 });
         }
         
-        // معالجة تحميل الملف
-        function handleFileDownload(fileUrl) {
-            // تعطيل زر التحميل
-            if (currentDownloadBtn) {
-                currentDownloadBtn.disabled = true;
-                currentDownloadBtn.innerHTML = '<span>⏳</span> جاري التحميل...';
+        // معالجة إجراء الملف (تحميل أو عرض)
+        function handleFileAction(fileUrl, fileType, button) {
+            if (fileType === 'download') {
+                // إذا كان رابط ميديا فاير، نقوم بالتحميل
+                handleMediafireDownload(fileUrl, button);
+            } else {
+                // إذا كان رابط آخر، نفتحه مباشرة
+                handleDirectView(fileUrl, button);
             }
-            
-            // عرض dialog الانتظار
-            document.getElementById('loadingDialog').style.display = 'flex';
+        }
+        
+        // معالجة تحميل ميديا فاير
+        function handleMediafireDownload(fileUrl, button) {
+            // تغيير حالة الزر إلى "جاري التحميل"
+            button.disabled = true;
+            button.classList.add('loading');
+            button.innerHTML = '<span>⏳</span> جاري التحميل...';
             
             const apiUrl = `https://script.google.com/macros/s/AKfycbzlpPlYUeDgsaq0Gb6A6Yxj78E0E7LZbQ3en6hIhIvPrax1URjCeIZ2ptV1mrYlYahC5w/exec?url=${encodeURIComponent(fileUrl)}`;
             
             fetch(apiUrl)
                 .then(response => response.text())
                 .then(result => {
-                    // إخفاء dialog الانتظار
-                    document.getElementById('loadingDialog').style.display = 'none';
-                    
-                    // إعادة تمكين زر التحميل
-                    if (currentDownloadBtn) {
-                        currentDownloadBtn.disabled = false;
-                        currentDownloadBtn.innerHTML = '<span>📥</span> تحميل';
-                    }
+                    // إعادة تعيين الزر
+                    resetButton(button, 'download');
                     
                     if (result.includes('发生错误，请联系开发者 KIMO') || result.includes('error') || !result.startsWith('http')) {
-                        // إذا كان هناك خطأ، عرض نافذة الاختيار
-                        currentOriginalUrl = fileUrl;
-                        document.getElementById('errorMessage').textContent = 'حدث خطأ في تشغيل الرابط';
-                        document.getElementById('errorModal').style.display = 'flex';
+                        // إذا كان هناك خطأ، فتح الرابط الأصلي مباشرة
+                        window.open(fileUrl, '_blank');
                     } else {
                         // إذا كان الرابط صالح، فتحه مباشرة
                         window.open(result, '_blank');
@@ -1053,35 +733,42 @@
                 })
                 .catch(error => {
                     console.error("خطأ في معالجة الرابط:", error);
-                    // إخفاء dialog الانتظار
-                    document.getElementById('loadingDialog').style.display = 'none';
-                    
-                    // إعادة تمكين زر التحميل
-                    if (currentDownloadBtn) {
-                        currentDownloadBtn.disabled = false;
-                        currentDownloadBtn.innerHTML = '<span>📥</span> تحميل';
-                    }
-                    
-                    currentOriginalUrl = fileUrl;
-                    document.getElementById('errorMessage').textContent = 'حدث خطأ في تشغيل الرابط';
-                    document.getElementById('errorModal').style.display = 'flex';
+                    // إعادة تعيين الزر وفتح الرابط الأصلي
+                    resetButton(button, 'download');
+                    window.open(fileUrl, '_blank');
                 });
         }
         
-        // إغلاق نافذة الخطأ
-        function closeErrorModal() {
-            document.getElementById('errorModal').style.display = 'none';
-            currentOriginalUrl = '';
-            currentDownloadBtn = null;
+        // معالجة العرض المباشر
+        function handleDirectView(fileUrl, button) {
+            // تغيير حالة الزر إلى "جاري العرض"
+            button.disabled = true;
+            button.classList.add('loading');
+            button.innerHTML = '<span>⏳</span> جاري العرض...';
+            
+            // فتح الرابط مباشرة بعد تأخير بسيط لتظهر حالة التحميل
+            setTimeout(() => {
+                window.open(fileUrl, '_blank');
+                resetButton(button, 'view');
+            }, 1000);
         }
         
-        // فتح الرابط الأصلي
-        function openOriginalUrl() {
-            if (currentOriginalUrl) {
-                window.open(currentOriginalUrl, '_blank');
+        // إعادة تعيين الزر إلى حالته الأصلية
+        function resetButton(button, type) {
+            button.disabled = false;
+            button.classList.remove('loading');
+            
+            if (type === 'download') {
+                button.innerHTML = '<span>📥</span> تحميل الملف';
+            } else {
+                button.innerHTML = '<span>👁️</span> عرض الصورة';
             }
-            closeErrorModal();
         }
+
+        // تحميل البيانات عند فتح الصفحة
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDoctorData();
+        });
         
         // تحديث وقت النشاط الأخير
         function updateLastActive() {
@@ -1094,12 +781,6 @@
         
         setInterval(updateLastActive, 60000);
         updateLastActive();
-        
-        // منع العودة لصفحة الاسم
-        window.history.pushState(null, null, window.location.href);
-        window.onpopstate = function() {
-            window.history.go(1);
-        };
     </script>
 </body>
 </html>
