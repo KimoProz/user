@@ -8,34 +8,17 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* نفس الـ CSS السابق مع تعديلات بسيطة */
         :root {
-            --primary: #304FFE;
-            --primary-light: #536DFE;
-            --primary-dark: #1A237E;
-            --primary-darker: #0D1440;
+            --primary: #A1001A;
+            --primary-light: #C2182B;
+            --primary-dark: #7A0014;
             --text: #1f2937;
             --text-light: #6b7280;
-            --bg: #f8fafc;
-            --card-bg: rgba(255, 255, 255, 0.85);
-            --card-border: rgba(48, 79, 254, 0.15);
+            --bg: #FFFFFF;
+            --card-bg: rgba(255, 255, 255, 0.98);
+            --card-border: rgba(161, 0, 26, 0.15);
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            --glow: 0 0 30px rgba(48, 79, 254, 0.4);
             --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .dark-mode {
-            --primary: #304FFE;
-            --primary-light: #536DFE;
-            --primary-dark: #1A237E;
-            --primary-darker: #0D1440;
-            --text: #f9fafb;
-            --text-light: #d1d5db;
-            --bg: #0a0f2b;
-            --card-bg: rgba(13, 20, 64, 0.7);
-            --card-border: rgba(48, 79, 254, 0.3);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            --glow: 0 0 40px rgba(48, 79, 254, 0.6);
         }
 
         * {
@@ -51,48 +34,37 @@
         }
 
         body {
-            background: linear-gradient(135deg, var(--bg) 0%, var(--primary-darker) 100%);
+            background-color: var(--bg);
             color: var(--text);
             min-height: 100vh;
             transition: var(--transition);
+            overflow-x: hidden;
         }
 
-        .dark-mode body {
-            background: linear-gradient(135deg, var(--bg) 0%, var(--primary-darker) 100%);
-        }
-
-        .bg-animation {
+        .bg-grid {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -2;
-            opacity: 0.8;
-        }
-
-        .bg-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
             background-image: 
-                linear-gradient(rgba(48, 79, 254, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(48, 79, 254, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+                linear-gradient(rgba(161, 0, 26, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(161, 0, 26, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.5;
         }
 
         .header {
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(10px);
             padding: 25px 30px;
             border-bottom: 1px solid var(--card-border);
             box-shadow: var(--shadow);
             position: sticky;
             top: 0;
             z-index: 100;
+            animation: slideDown 0.8s ease-out;
         }
         
         .logo {
@@ -127,19 +99,21 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 30px 20px;
+            animation: fadeIn 0.8s ease-out;
         }
         
         .welcome-section {
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 50px 40px;
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
             margin-bottom: 30px;
             border: 1px solid var(--card-border);
             text-align: center;
             box-shadow: var(--shadow);
             position: relative;
             overflow: hidden;
+            animation: cardAppear 0.8s ease-out 0.2s both;
         }
 
         .welcome-section::before {
@@ -153,7 +127,7 @@
         }
         
         .welcome-title {
-            font-size: 2.2rem;
+            font-size: 2rem;
             margin-bottom: 15px;
             color: var(--text);
             font-weight: 700;
@@ -166,17 +140,18 @@
         
         .content-section {
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 40px;
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
             margin-bottom: 30px;
             border: 1px solid var(--card-border);
             box-shadow: var(--shadow);
+            animation: cardAppear 0.8s ease-out 0.4s both;
         }
         
         .section-title {
-            font-size: 1.8rem;
-            margin-bottom: 30px;
+            font-size: 1.6rem;
+            margin-bottom: 25px;
             color: var(--primary);
             font-weight: 700;
             padding-bottom: 15px;
@@ -194,91 +169,98 @@
             background: linear-gradient(90deg, var(--primary), transparent);
         }
         
-        .items-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px;
+        .subjects-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
         
-        .item-card {
+        .subject-card {
             background: var(--card-bg);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px 25px;
+            border-radius: 16px;
+            padding: 25px;
             border: 1px solid var(--card-border);
             transition: var(--transition);
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            animation: slideInRight 0.6s ease-out both;
         }
 
-        .item-card::before {
+        .subject-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-dark), var(--primary), var(--primary-light));
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-dark), var(--primary), var(--primary-light));
         }
         
-        .item-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow), var(--glow);
+        .subject-card:hover {
+            transform: translateX(-8px);
+            box-shadow: 0 6px 20px rgba(161, 0, 26, 0.2);
         }
         
-        .item-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 16px;
+        .subject-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 14px;
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: white;
-            box-shadow: 0 8px 20px rgba(48, 79, 254, 0.3);
+            box-shadow: 0 4px 15px rgba(161, 0, 26, 0.3);
+            flex-shrink: 0;
         }
         
-        .item-name {
-            font-size: 1.4rem;
+        .subject-content {
+            flex: 1;
+        }
+        
+        .subject-name {
+            font-size: 1.3rem;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             color: var(--text);
         }
         
-        .item-description {
-            font-size: 1.1rem;
+        .subject-description {
+            font-size: 1rem;
             color: var(--text-light);
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             line-height: 1.5;
         }
         
-        .item-admin {
-            font-size: 1rem;
+        .subject-admin {
+            font-size: 0.9rem;
             color: var(--primary);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
         
         .empty-state, .loading {
             text-align: center;
-            padding: 60px;
+            padding: 50px;
             color: var(--text-light);
-            grid-column: 1 / -1;
         }
         
         .empty-icon {
-            font-size: 4rem;
+            font-size: 3.5rem;
             margin-bottom: 20px;
             opacity: 0.5;
         }
         
         .loading-spinner {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border: 4px solid var(--card-border);
             border-top: 4px solid var(--primary);
             border-radius: 50%;
@@ -286,97 +268,154 @@
             margin: 0 auto 20px;
         }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--card-border);
-            border-radius: 50%;
-            width: 55px;
-            height: 55px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: var(--shadow);
-            z-index: 1000;
-        }
-
-        .theme-toggle:hover {
-            transform: rotate(180deg) scale(1.1);
-            box-shadow: var(--glow);
-        }
-
-        .theme-toggle i {
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-        
         footer {
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            padding: 25px;
+            backdrop-filter: blur(10px);
+            padding: 20px;
             text-align: center;
             border-top: 1px solid var(--card-border);
+            animation: slideUp 0.8s ease-out 0.6s both;
         }
         
         .copyright {
             color: var(--text-light);
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
 
+        /* Animations */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* تحسينات للشاشات الصغيرة */
         @media (max-width: 768px) {
             .container {
                 padding: 20px 15px;
             }
             
             .welcome-section {
-                padding: 40px 25px;
+                padding: 30px 20px;
             }
             
             .content-section {
-                padding: 30px 25px;
-            }
-            
-            .items-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .item-card {
                 padding: 25px 20px;
             }
             
-            .theme-toggle {
-                top: 15px;
-                left: 15px;
-                width: 50px;
-                height: 50px;
+            .subject-card {
+                padding: 20px;
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .subject-card::before {
+                width: 100%;
+                height: 4px;
+            }
+            
+            .subject-card:hover {
+                transform: translateY(-5px);
+            }
+            
+            .subject-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .logo {
+                font-size: 1.8rem;
+            }
+            
+            .welcome-title {
+                font-size: 1.6rem;
+            }
+            
+            .welcome-subtitle {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.4rem;
+            }
+            
+            .subject-name {
+                font-size: 1.2rem;
+            }
+            
+            .subject-description {
+                font-size: 0.95rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="bg-animation">
-        <div class="bg-grid"></div>
-    </div>
-
-    <div class="theme-toggle" id="themeToggle">
-        <i class="fas fa-moon"></i>
-    </div>
+    <div class="bg-grid"></div>
 
     <div class="header">
         <div class="logo">منصة محاضراتي</div>
         <div class="nav-breadcrumb">
-            <span class="breadcrumb-item" onclick="window.location.href='app.html'">الرئيسية</span>
+            <span class="breadcrumb-item" onclick="window.location.href='index.html'">الرئيسية</span>
             <span> › </span>
             <span>المواد الدراسية</span>
         </div>
@@ -391,7 +430,7 @@
         <div class="content-section">
             <h2 class="section-title">قائمة المواد</h2>
             
-            <div id="subjectsList" class="items-grid">
+            <div id="subjectsList" class="subjects-container">
                 <div class="loading">
                     <div class="loading-spinner"></div>
                     <div>جاري تحميل المواد الدراسية...</div>
@@ -419,44 +458,9 @@
         const urlParams = new URLSearchParams(window.location.search);
         const programId = urlParams.get('program');
         
-        // تبديل الوضع الداكن/الفاتح
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = themeToggle.querySelector('i');
-        
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            document.body.classList.add('dark-mode');
-            themeIcon.classList.remove('fa-moon');
-            themeIcon.classList.add('fa-sun');
-        }
-        
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            
-            if (document.body.classList.contains('dark-mode')) {
-                localStorage.setItem('darkMode', 'enabled');
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-            } else {
-                localStorage.setItem('darkMode', 'disabled');
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-            }
-        });
-
-        // التحقق من وجود بيانات المستخدم
-        document.addEventListener('DOMContentLoaded', () => {
-            const userName = localStorage.getItem('userName');
-            if (!userName) {
-                window.location.href = 'index.html';
-                return;
-            }
-            
-            loadProgramData();
-        });
-        
         function loadProgramData() {
             if (!programId) {
-                window.location.href = 'app.html';
+                window.location.href = 'index.html';
                 return;
             }
             
@@ -465,7 +469,7 @@
             database.ref('programs/' + programId).once('value')
                 .then((snapshot) => {
                     if (!snapshot.exists()) {
-                        window.location.href = 'app.html';
+                        window.location.href = 'index.html';
                         return;
                     }
                     
@@ -475,7 +479,7 @@
                 })
                 .catch((error) => {
                     console.error("خطأ في تحميل بيانات التطبيق:", error);
-                    window.location.href = 'app.html';
+                    window.location.href = 'index.html';
                 });
         }
         
@@ -499,24 +503,32 @@
                         return;
                     }
                     
-                    Object.entries(subjects).forEach(([subjectId, subject]) => {
-                        const subjectCard = document.createElement('div');
-                        subjectCard.className = 'item-card';
-                        subjectCard.onclick = () => {
-                            window.location.href = `bench.html?program=${programId}&subject=${subjectId}`;
-                        };
-                        
-                        subjectCard.innerHTML = `
-                            <div class="item-icon">📚</div>
-                            <div class="item-name">${subject.name}</div>
-                            <div class="item-description">${subject.description || 'لا يوجد وصف للمادة'}</div>
-                            <div class="item-admin">
-                                <span>👤</span>
-                                ${subject.ad}
-                            </div>
-                        `;
-                        
-                        subjectsList.appendChild(subjectCard);
+                    // تحويل الكائن إلى مصفوفة وإضافة تأخير للأنيميشن
+                    const subjectsArray = Object.entries(subjects);
+                    
+                    subjectsArray.forEach(([subjectId, subject], index) => {
+                        setTimeout(() => {
+                            const subjectCard = document.createElement('div');
+                            subjectCard.className = 'subject-card';
+                            subjectCard.style.animationDelay = `${index * 0.1}s`;
+                            subjectCard.onclick = () => {
+                                window.location.href = `bench.html?program=${programId}&subject=${subjectId}`;
+                            };
+                            
+                            subjectCard.innerHTML = `
+                                <div class="subject-icon">📚</div>
+                                <div class="subject-content">
+                                    <div class="subject-name">${subject.name}</div>
+                                    <div class="subject-description">${subject.description || 'لا يوجد وصف للمادة'}</div>
+                                    <div class="subject-admin">
+                                        <span>👤</span>
+                                        ${subject.ad}
+                                    </div>
+                                </div>
+                            `;
+                            
+                            subjectsList.appendChild(subjectCard);
+                        }, index * 100);
                     });
                 })
                 .catch((error) => {
@@ -530,6 +542,11 @@
                     `;
                 });
         }
+
+        // تحميل البيانات عند فتح الصفحة
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProgramData();
+        });
         
         // تحديث وقت النشاط الأخير
         function updateLastActive() {
@@ -542,12 +559,6 @@
         
         setInterval(updateLastActive, 60000);
         updateLastActive();
-        
-        // منع العودة لصفحة الاسم
-        window.history.pushState(null, null, window.location.href);
-        window.onpopstate = function() {
-            window.history.go(1);
-        };
     </script>
 </body>
 </html>
