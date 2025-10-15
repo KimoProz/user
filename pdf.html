@@ -6,47 +6,220 @@
     <title>منصة محاضراتي - الملفات</title>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #304FFE;
+            --primary-light: #536DFE;
+            --primary-dark: #1A237E;
+            --primary-darker: #0D1440;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --bg: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --card-border: rgba(48, 79, 254, 0.15);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --glow: 0 0 30px rgba(48, 79, 254, 0.4);
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .dark-mode {
+            --primary: #304FFE;
+            --primary-light: #536DFE;
+            --primary-dark: #1A237E;
+            --primary-darker: #0D1440;
+            --text: #f9fafb;
+            --text-light: #d1d5db;
+            --bg: #0a0f2b;
+            --card-bg: rgba(13, 20, 64, 0.7);
+            --card-border: rgba(48, 79, 254, 0.3);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --glow: 0 0 40px rgba(48, 79, 254, 0.6);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
-        
+
+        input, textarea {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
+
         body {
-            background: #f8fafc;
-            color: #1f2937;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--primary-darker) 100%);
+            color: var(--text);
             min-height: 100vh;
+            transition: var(--transition);
+            overflow-x: hidden;
         }
-        
+
+        .dark-mode body {
+            background: linear-gradient(135deg, var(--bg) 0%, var(--primary-darker) 100%);
+        }
+
+        /* تأثيرات الخلفية المتقدمة */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.8;
+        }
+
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(48, 79, 254, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(48, 79, 254, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+        }
+
+        .bg-circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.5;
+            animation: float 25s infinite ease-in-out;
+        }
+
+        .circle-1 {
+            width: 500px;
+            height: 500px;
+            top: 10%;
+            right: 10%;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            animation-delay: 0s;
+        }
+
+        .circle-2 {
+            width: 600px;
+            height: 600px;
+            bottom: 10%;
+            left: 10%;
+            background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%);
+            animation-delay: 8s;
+        }
+
+        .circle-3 {
+            width: 400px;
+            height: 400px;
+            top: 50%;
+            left: 20%;
+            background: radial-gradient(circle, var(--primary-dark) 0%, transparent 70%);
+            animation-delay: 16s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) scale(1) rotate(0deg);
+            }
+            33% {
+                transform: translateY(-40px) scale(1.1) rotate(5deg);
+            }
+            66% {
+                transform: translateY(30px) scale(0.9) rotate(-5deg);
+            }
+        }
+
+        /* تأثيرات الجسيمات */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: particle-float 20s infinite linear;
+        }
+
+        @keyframes particle-float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.4;
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
         .header {
-            background: white;
-            padding: 20px 30px;
-            border-bottom: 1px solid #e5e7eb;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            padding: 25px 30px;
+            border-bottom: 1px solid var(--card-border);
+            box-shadow: var(--shadow);
             position: sticky;
             top: 0;
             z-index: 100;
         }
         
         .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #1e3a8a;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--primary);
             text-align: center;
             margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .nav-breadcrumb {
             text-align: center;
-            color: #6b7280;
-            font-size: 0.9rem;
+            color: var(--text-light);
+            font-size: 1rem;
         }
         
         .breadcrumb-item {
-            color: #1e3a8a;
+            color: var(--primary);
             cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .breadcrumb-item:hover {
+            color: var(--primary-light);
         }
         
         .container {
@@ -56,43 +229,68 @@
         }
         
         .welcome-section {
-            background: white;
-            border-radius: 16px;
-            padding: 40px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 50px 40px;
             margin-bottom: 30px;
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--card-border);
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-dark), var(--primary), var(--primary-light));
         }
         
         .welcome-title {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            color: #1e3a8a;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: var(--text);
             font-weight: 700;
         }
         
         .welcome-subtitle {
-            color: #6b7280;
-            font-size: 1.1rem;
+            color: var(--text-light);
+            font-size: 1.2rem;
         }
         
         .content-section {
-            background: white;
-            border-radius: 16px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
             padding: 40px;
             margin-bottom: 30px;
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--card-border);
+            box-shadow: var(--shadow);
         }
         
         .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 25px;
-            color: #1e3a8a;
-            font-weight: 600;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: var(--primary);
+            font-weight: 700;
             padding-bottom: 15px;
-            border-bottom: 2px solid #e5e7eb;
+            border-bottom: 2px solid var(--card-border);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), transparent);
         }
         
         .items-grid {
@@ -102,42 +300,55 @@
         }
         
         .item-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            border: 2px solid #e5e7eb;
-            transition: all 0.3s ease;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px 25px;
+            border: 1px solid var(--card-border);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .item-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-dark), var(--primary), var(--primary-light));
         }
         
         .item-card:hover {
-            border-color: #1e3a8a;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(30, 58, 138, 0.15);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow), var(--glow);
         }
         
         .item-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            background: #1e3a8a;
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 20px;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: white;
+            box-shadow: 0 8px 20px rgba(48, 79, 254, 0.3);
         }
         
         .item-name {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #1f2937;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text);
         }
         
         .item-description {
-            font-size: 1rem;
-            color: #6b7280;
+            font-size: 1.1rem;
+            color: var(--text-light);
             margin-bottom: 20px;
             line-height: 1.5;
         }
@@ -148,63 +359,64 @@
             align-items: center;
             margin-top: 15px;
             padding-top: 15px;
-            border-top: 1px solid #e5e7eb;
+            border-top: 1px solid var(--card-border);
         }
         
         .item-admin {
-            font-size: 0.9rem;
-            color: #1e3a8a;
+            font-size: 1rem;
+            color: var(--primary);
             display: flex;
             align-items: center;
             gap: 8px;
         }
         
         .download-btn {
-            background: #1e3a8a;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
+            padding: 12px 24px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 1rem;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             display: flex;
             align-items: center;
             gap: 8px;
+            box-shadow: 0 4px 15px rgba(48, 79, 254, 0.3);
         }
         
         .download-btn:hover {
-            background: #3730a3;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(30, 58, 138, 0.3);
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(48, 79, 254, 0.4);
+        }
+
+        .download-btn:disabled {
+            background: linear-gradient(135deg, #9ca3af, #6b7280);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
         
-        .empty-state {
+        .empty-state, .loading {
             text-align: center;
             padding: 60px;
-            color: #9ca3af;
+            color: var(--text-light);
             grid-column: 1 / -1;
         }
         
         .empty-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
+            font-size: 4rem;
+            margin-bottom: 20px;
             opacity: 0.5;
         }
         
-        .loading {
-            text-align: center;
-            padding: 60px;
-            color: #9ca3af;
-            grid-column: 1 / -1;
-        }
-        
         .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid #e5e7eb;
-            border-top: 3px solid #1e3a8a;
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--card-border);
+            border-top: 4px solid var(--primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto 20px;
@@ -215,6 +427,68 @@
             100% { transform: rotate(360deg); }
         }
         
+        /* نافذة الانتظار */
+        .loading-dialog {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .loading-dialog-content {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--card-border);
+            position: relative;
+        }
+
+        .loading-dialog-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-dark), var(--primary), var(--primary-light));
+            border-radius: 20px 20px 0 0;
+        }
+        
+        .loading-spinner-large {
+            width: 80px;
+            height: 80px;
+            border: 6px solid var(--card-border);
+            border-top: 6px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 25px;
+        }
+        
+        .loading-dialog-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text);
+            font-weight: 700;
+        }
+        
+        .loading-dialog-message {
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+        
+        /* نافذة الخطأ */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -226,28 +500,43 @@
             z-index: 1000;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(5px);
         }
         
         .modal {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
             max-width: 400px;
             width: 90%;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--card-border);
+            position: relative;
+        }
+
+        .modal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-dark), var(--primary), var(--primary-light));
+            border-radius: 20px 20px 0 0;
         }
         
         .modal-title {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: #1f2937;
-            font-weight: 600;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--text);
+            font-weight: 700;
         }
         
         .modal-message {
-            color: #6b7280;
-            margin-bottom: 25px;
+            color: var(--text-light);
+            margin-bottom: 30px;
             line-height: 1.5;
         }
         
@@ -258,42 +547,173 @@
         }
         
         .modal-btn {
-            padding: 10px 25px;
+            padding: 12px 25px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: var(--transition);
+            flex: 1;
         }
         
         .modal-btn.cancel {
-            background: #6b7280;
+            background: var(--text-light);
             color: white;
         }
         
         .modal-btn.open {
-            background: #1e3a8a;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
         }
         
         .modal-btn:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: var(--glow);
+        }
+
+        .theme-toggle i {
+            font-size: 1.5rem;
+            color: var(--primary);
         }
         
         footer {
-            background: #1f2937;
-            padding: 30px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            padding: 25px;
             text-align: center;
-            margin-top: 50px;
+            border-top: 1px solid var(--card-border);
         }
         
         .copyright {
-            color: #d1d5db;
-            font-size: 0.9rem;
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        /* تحسينات للشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .welcome-section {
+                padding: 40px 25px;
+            }
+            
+            .content-section {
+                padding: 30px 25px;
+            }
+            
+            .items-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .item-card {
+                padding: 25px 20px;
+            }
+            
+            .item-meta {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .download-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+            
+            .theme-toggle {
+                top: 15px;
+                left: 15px;
+                width: 50px;
+                height: 50px;
+            }
+
+            .bg-circle {
+                filter: blur(40px);
+            }
+        }
+
+        /* تحسينات للشاشات المتوسطة */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .items-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        /* تحسينات للشاشات الكبيرة */
+        @media (min-width: 1025px) {
+            .container {
+                max-width: 1400px;
+            }
+        }
+
+        /* تأثيرات دخول الصفحة */
+        .welcome-section, .content-section {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .item-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
+    <div class="bg-animation">
+        <div class="bg-grid"></div>
+        <div class="bg-circles">
+            <div class="bg-circle circle-1"></div>
+            <div class="bg-circle circle-2"></div>
+            <div class="bg-circle circle-3"></div>
+        </div>
+    </div>
+
+    <div class="particles" id="particles"></div>
+
+    <div class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </div>
+
     <div class="header">
         <div class="logo">منصة محاضراتي</div>
         <div class="nav-breadcrumb">
@@ -324,6 +744,15 @@
                     <div>جاري تحميل الملفات...</div>
                 </div>
             </div>
+        </div>
+    </div>
+    
+    <!-- نافذة الانتظار -->
+    <div id="loadingDialog" class="loading-dialog">
+        <div class="loading-dialog-content">
+            <div class="loading-spinner-large"></div>
+            <h3 class="loading-dialog-title">جاري التحميل</h3>
+            <p class="loading-dialog-message">يرجى الانتظار أثناء معالجة الملف...</p>
         </div>
     </div>
     
@@ -362,7 +791,62 @@
         const doctorId = urlParams.get('doctor');
         
         let currentOriginalUrl = '';
+        let currentDownloadBtn = null;
         
+        // إنشاء جسيمات متحركة
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 25;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // حجم عشوائي
+                const size = Math.random() * 12 + 8;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // تدرج اللون الأزرق
+                const opacity = Math.random() * 0.5 + 0.3;
+                particle.style.background = `rgba(48, 79, 254, ${opacity})`;
+                
+                // موقع عشوائي
+                const left = Math.random() * 100;
+                particle.style.left = `${left}%`;
+                
+                // تأخير عشوائي للحركة
+                const delay = Math.random() * 20;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // تبديل الوضع الداكن/الفاتح
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+
         // التحقق من وجود بيانات المستخدم
         document.addEventListener('DOMContentLoaded', () => {
             const userName = localStorage.getItem('userName');
@@ -371,6 +855,7 @@
                 return;
             }
             
+            createParticles();
             loadDoctorData();
         });
         
@@ -476,9 +961,20 @@
                         return;
                     }
                     
-                    Object.entries(pdfs).forEach(([pdfId, pdf]) => {
+                    // تحويل الكائن إلى مصفوفة وترتيبها حسب التاريخ (الأحدث أولاً)
+                    const pdfsArray = Object.entries(pdfs);
+                    
+                    // إذا كان هناك حقل timestamp نستخدمه للترتيب، وإلا نستخدم ترتيب الإضافة
+                    pdfsArray.sort(([, pdfA], [, pdfB]) => {
+                        const timeA = pdfA.timestamp || pdfA.dateAdded || 0;
+                        const timeB = pdfB.timestamp || pdfB.dateAdded || 0;
+                        return timeB - timeA; // الأحدث أولاً
+                    });
+                    
+                    pdfsArray.forEach(([pdfId, pdf], index) => {
                         const pdfCard = document.createElement('div');
                         pdfCard.className = 'item-card';
+                        pdfCard.style.animationDelay = `${index * 0.1}s`;
                         
                         pdfCard.innerHTML = `
                             <div class="item-icon">📁</div>
@@ -503,6 +999,7 @@
                         downloadBtn.addEventListener('click', (e) => {
                             e.stopPropagation();
                             const pdfUrl = downloadBtn.getAttribute('data-url');
+                            currentDownloadBtn = downloadBtn;
                             handleFileDownload(pdfUrl);
                         });
                     });
@@ -521,11 +1018,29 @@
         
         // معالجة تحميل الملف
         function handleFileDownload(fileUrl) {
+            // تعطيل زر التحميل
+            if (currentDownloadBtn) {
+                currentDownloadBtn.disabled = true;
+                currentDownloadBtn.innerHTML = '<span>⏳</span> جاري التحميل...';
+            }
+            
+            // عرض dialog الانتظار
+            document.getElementById('loadingDialog').style.display = 'flex';
+            
             const apiUrl = `https://script.google.com/macros/s/AKfycbzlpPlYUeDgsaq0Gb6A6Yxj78E0E7LZbQ3en6hIhIvPrax1URjCeIZ2ptV1mrYlYahC5w/exec?url=${encodeURIComponent(fileUrl)}`;
             
             fetch(apiUrl)
                 .then(response => response.text())
                 .then(result => {
+                    // إخفاء dialog الانتظار
+                    document.getElementById('loadingDialog').style.display = 'none';
+                    
+                    // إعادة تمكين زر التحميل
+                    if (currentDownloadBtn) {
+                        currentDownloadBtn.disabled = false;
+                        currentDownloadBtn.innerHTML = '<span>📥</span> تحميل';
+                    }
+                    
                     if (result.includes('发生错误，请联系开发者 KIMO') || result.includes('error') || !result.startsWith('http')) {
                         // إذا كان هناك خطأ، عرض نافذة الاختيار
                         currentOriginalUrl = fileUrl;
@@ -538,6 +1053,15 @@
                 })
                 .catch(error => {
                     console.error("خطأ في معالجة الرابط:", error);
+                    // إخفاء dialog الانتظار
+                    document.getElementById('loadingDialog').style.display = 'none';
+                    
+                    // إعادة تمكين زر التحميل
+                    if (currentDownloadBtn) {
+                        currentDownloadBtn.disabled = false;
+                        currentDownloadBtn.innerHTML = '<span>📥</span> تحميل';
+                    }
+                    
                     currentOriginalUrl = fileUrl;
                     document.getElementById('errorMessage').textContent = 'حدث خطأ في تشغيل الرابط';
                     document.getElementById('errorModal').style.display = 'flex';
@@ -548,6 +1072,7 @@
         function closeErrorModal() {
             document.getElementById('errorModal').style.display = 'none';
             currentOriginalUrl = '';
+            currentDownloadBtn = null;
         }
         
         // فتح الرابط الأصلي
