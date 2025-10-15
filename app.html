@@ -6,35 +6,104 @@
     <title>منصة محاضراتي - التطبيقات</title>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #304FFE;
+            --primary-light: #536DFE;
+            --primary-dark: #1A237E;
+            --primary-darker: #0D1440;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --bg: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --card-border: rgba(48, 79, 254, 0.15);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --glow: 0 0 30px rgba(48, 79, 254, 0.4);
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .dark-mode {
+            --primary: #304FFE;
+            --primary-light: #536DFE;
+            --primary-dark: #1A237E;
+            --primary-darker: #0D1440;
+            --text: #f9fafb;
+            --text-light: #d1d5db;
+            --bg: #0a0f2b;
+            --card-bg: rgba(13, 20, 64, 0.7);
+            --card-border: rgba(48, 79, 254, 0.3);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --glow: 0 0 40px rgba(48, 79, 254, 0.6);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
-        
+
         body {
-            background: #f8fafc;
-            color: #1f2937;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--primary-darker) 100%);
+            color: var(--text);
             min-height: 100vh;
+            transition: var(--transition);
         }
-        
+
+        .dark-mode body {
+            background: linear-gradient(135deg, var(--bg) 0%, var(--primary-darker) 100%);
+        }
+
+        /* تأثيرات الخلفية */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.8;
+        }
+
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(48, 79, 254, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(48, 79, 254, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+        }
+
         .header {
-            background: white;
-            padding: 20px 30px;
-            border-bottom: 1px solid #e5e7eb;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            padding: 25px 30px;
+            border-bottom: 1px solid var(--card-border);
+            box-shadow: var(--shadow);
             position: sticky;
             top: 0;
             z-index: 100;
         }
         
         .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #1e3a8a;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--primary);
             text-align: center;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .container {
@@ -44,43 +113,68 @@
         }
         
         .welcome-section {
-            background: white;
-            border-radius: 16px;
-            padding: 40px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 50px 40px;
             margin-bottom: 30px;
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--card-border);
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-dark), var(--primary), var(--primary-light));
         }
         
         .welcome-title {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            color: #1e3a8a;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: var(--text);
             font-weight: 700;
         }
         
         .welcome-subtitle {
-            color: #6b7280;
-            font-size: 1.1rem;
+            color: var(--text-light);
+            font-size: 1.2rem;
         }
         
         .content-section {
-            background: white;
-            border-radius: 16px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
             padding: 40px;
             margin-bottom: 30px;
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--card-border);
+            box-shadow: var(--shadow);
         }
         
         .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 25px;
-            color: #1e3a8a;
-            font-weight: 600;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: var(--primary);
+            font-weight: 700;
             padding-bottom: 15px;
-            border-bottom: 2px solid #e5e7eb;
+            border-bottom: 2px solid var(--card-border);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), transparent);
         }
         
         .items-grid {
@@ -90,80 +184,86 @@
         }
         
         .item-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            border: 2px solid #e5e7eb;
-            transition: all 0.3s ease;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px 25px;
+            border: 1px solid var(--card-border);
+            transition: var(--transition);
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .item-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-dark), var(--primary), var(--primary-light));
         }
         
         .item-card:hover {
-            border-color: #1e3a8a;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(30, 58, 138, 0.15);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow), var(--glow);
         }
         
         .item-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            background: #1e3a8a;
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 20px;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: white;
+            box-shadow: 0 8px 20px rgba(48, 79, 254, 0.3);
         }
         
         .item-name {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #1f2937;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text);
         }
         
         .item-description {
-            font-size: 1rem;
-            color: #6b7280;
+            font-size: 1.1rem;
+            color: var(--text-light);
             margin-bottom: 15px;
             line-height: 1.5;
         }
         
         .item-admin {
-            font-size: 0.9rem;
-            color: #1e3a8a;
+            font-size: 1rem;
+            color: var(--primary);
             display: flex;
             align-items: center;
             gap: 8px;
         }
         
-        .empty-state {
+        .empty-state, .loading {
             text-align: center;
             padding: 60px;
-            color: #9ca3af;
+            color: var(--text-light);
             grid-column: 1 / -1;
         }
         
         .empty-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
+            font-size: 4rem;
+            margin-bottom: 20px;
             opacity: 0.5;
         }
         
-        .loading {
-            text-align: center;
-            padding: 60px;
-            color: #9ca3af;
-            grid-column: 1 / -1;
-        }
-        
         .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid #e5e7eb;
-            border-top: 3px solid #1e3a8a;
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--card-border);
+            border-top: 4px solid var(--primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto 20px;
@@ -174,20 +274,89 @@
             100% { transform: rotate(360deg); }
         }
         
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: var(--glow);
+        }
+
+        .theme-toggle i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
         footer {
-            background: #1f2937;
-            padding: 30px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            padding: 25px;
             text-align: center;
-            margin-top: 50px;
+            border-top: 1px solid var(--card-border);
         }
         
         .copyright {
-            color: #d1d5db;
-            font-size: 0.9rem;
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        /* تحسينات للشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .welcome-section {
+                padding: 40px 25px;
+            }
+            
+            .content-section {
+                padding: 30px 25px;
+            }
+            
+            .items-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .item-card {
+                padding: 25px 20px;
+            }
+            
+            .theme-toggle {
+                top: 15px;
+                left: 15px;
+                width: 50px;
+                height: 50px;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="bg-animation">
+        <div class="bg-grid"></div>
+    </div>
+
+    <div class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </div>
+
     <div class="header">
         <div class="logo">منصة محاضراتي</div>
     </div>
@@ -226,6 +395,30 @@
         
         firebase.initializeApp(firebaseConfig);
         
+        // تبديل الوضع الداكن/الفاتح
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+
         // التحقق من وجود بيانات المستخدم
         document.addEventListener('DOMContentLoaded', () => {
             const userName = localStorage.getItem('userName');
