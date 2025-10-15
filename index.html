@@ -18,18 +18,18 @@
             --card-bg: rgba(255, 255, 255, 0.98);
             --card-border: rgba(161, 0, 26, 0.15);
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .dark-mode {
-            --primary: #3B82F6;
-            --primary-light: #60A5FA;
-            --primary-dark: #2563EB;
+            --primary: #A1001A;
+            --primary-light: #C2182B;
+            --primary-dark: #7A0014;
             --text: #f9fafb;
             --text-light: #d1d5db;
             --bg: #0F172A;
             --card-bg: rgba(15, 23, 42, 0.95);
-            --card-border: rgba(59, 130, 246, 0.3);
+            --card-border: rgba(161, 0, 26, 0.3);
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
 
@@ -78,8 +78,8 @@
 
         .dark-mode .bg-grid {
             background-image: 
-                linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
+                linear-gradient(rgba(161, 0, 26, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(161, 0, 26, 0.05) 1px, transparent 1px);
         }
         
         .container {
@@ -91,6 +91,7 @@
             align-items: center;
             justify-content: center;
             width: 100%;
+            animation: slideIn 0.8s ease-out;
         }
         
         .welcome-card {
@@ -106,6 +107,7 @@
             position: relative;
             transition: var(--transition);
             max-width: 450px;
+            animation: cardAppear 0.8s ease-out;
         }
 
         .welcome-card::before {
@@ -129,6 +131,7 @@
             background-clip: text;
             position: relative;
             display: inline-block;
+            animation: logoPulse 2s infinite ease-in-out;
         }
 
         .logo::after {
@@ -190,11 +193,12 @@
             font-size: 1rem;
             transition: var(--transition);
             font-weight: 500;
+            animation: inputSlide 0.6s ease-out;
         }
 
         .dark-mode input {
             background: rgba(15, 23, 42, 0.8);
-            border-color: rgba(59, 130, 246, 0.3);
+            border-color: rgba(161, 0, 26, 0.3);
         }
         
         input:focus {
@@ -202,11 +206,12 @@
             border-color: var(--primary);
             background: rgba(255, 255, 255, 0.95);
             box-shadow: 0 0 0 3px rgba(161, 0, 26, 0.15);
+            transform: translateY(-2px);
         }
 
         .dark-mode input:focus {
             background: rgba(15, 23, 42, 0.9);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            box-shadow: 0 0 0 3px rgba(161, 0, 26, 0.2);
         }
 
         .input-icon {
@@ -218,11 +223,13 @@
             font-size: 1.2rem;
             transition: var(--transition);
             z-index: 2;
+            animation: iconBounce 0.8s ease-out;
         }
 
         input:focus + .input-icon {
             color: var(--primary-light);
             transform: translateY(-50%) scale(1.1);
+            animation: iconPulse 1.5s infinite;
         }
 
         .error-message {
@@ -231,6 +238,7 @@
             margin-top: 8px;
             text-align: right;
             display: none;
+            animation: shake 0.5s ease-in-out;
         }
         
         .btn {
@@ -247,10 +255,11 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(161, 0, 26, 0.3);
+            animation: buttonSlide 0.8s ease-out 0.2s both;
         }
 
         .dark-mode .btn {
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 4px 15px rgba(161, 0, 26, 0.3);
         }
 
         .btn::before {
@@ -270,7 +279,7 @@
         }
 
         .dark-mode .btn:hover {
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 6px 20px rgba(161, 0, 26, 0.4);
         }
 
         .btn:hover::before {
@@ -308,6 +317,7 @@
             transition: var(--transition);
             box-shadow: var(--shadow);
             z-index: 1000;
+            animation: toggleAppear 0.8s ease-out;
         }
 
         .theme-toggle::before {
@@ -353,6 +363,7 @@
             padding: 20px;
             text-align: center;
             border-top: 1px solid var(--card-border);
+            animation: footerSlide 0.8s ease-out 0.4s both;
         }
         
         .copyright {
@@ -361,18 +372,112 @@
             font-weight: 500;
         }
 
-        .welcome-card, .theme-toggle {
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        @keyframes fadeInUp {
+        /* Animations */
+        @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(50px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
+            }
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes logoPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes inputSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes buttonSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes iconBounce {
+            0% {
+                transform: translateY(-50%) scale(0);
+            }
+            70% {
+                transform: translateY(-50%) scale(1.2);
+            }
+            100% {
+                transform: translateY(-50%) scale(1);
+            }
+        }
+
+        @keyframes iconPulse {
+            0%, 100% {
+                transform: translateY(-50%) scale(1.1);
+            }
+            50% {
+                transform: translateY(-50%) scale(1.3);
+            }
+        }
+
+        @keyframes toggleAppear {
+            from {
+                opacity: 0;
+                transform: scale(0) rotate(-180deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        @keyframes footerSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-5px);
+            }
+            75% {
+                transform: translateX(5px);
             }
         }
 
@@ -491,12 +596,16 @@
             }
         });
 
+        // التحقق من وجود اسم المستخدم في localStorage
         document.addEventListener('DOMContentLoaded', () => {
             const userName = localStorage.getItem('userName');
-            if (userName) {
-                window.location.href = 'app.html';
+            if (!userName) {
+                // إذا لم يكن هناك اسم، تأكد من أن المستخدم في هذه الصفحة
                 return;
             }
+            
+            // إذا كان هناك اسم، انتقل إلى الصفحة الرئيسية
+            window.location.href = 'app.html';
         });
         
         async function getUserIP() {
@@ -601,9 +710,13 @@
             }
         });
         
+        // منع العودة لصفحة التطبيق إذا لم يكن هناك اسم
         window.history.pushState(null, null, window.location.href);
         window.onpopstate = function() {
-            window.history.go(1);
+            const userName = localStorage.getItem('userName');
+            if (!userName) {
+                window.history.go(1);
+            }
         };
     </script>
 </body>
