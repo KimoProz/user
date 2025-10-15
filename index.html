@@ -21,18 +21,6 @@
             --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        .dark-mode {
-            --primary: #A1001A;
-            --primary-light: #C2182B;
-            --primary-dark: #7A0014;
-            --text: #f9fafb;
-            --text-light: #d1d5db;
-            --bg: #0F172A;
-            --card-bg: rgba(15, 23, 42, 0.95);
-            --card-border: rgba(161, 0, 26, 0.3);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -44,20 +32,11 @@
             -ms-user-select: none;
             user-select: none;
         }
-        
-        input {
-            -webkit-user-select: text;
-            -moz-user-select: text;
-            -ms-user-select: text;
-            user-select: text;
-        }
-        
+
         body {
             background-color: var(--bg);
             color: var(--text);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
             transition: var(--transition);
             overflow-x: hidden;
         }
@@ -76,41 +55,51 @@
             opacity: 0.5;
         }
 
-        .dark-mode .bg-grid {
-            background-image: 
-                linear-gradient(rgba(161, 0, 26, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(161, 0, 26, 0.05) 1px, transparent 1px);
+        .header {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            padding: 25px 30px;
+            border-bottom: 1px solid var(--card-border);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.8s ease-out;
+        }
+        
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .container {
-            max-width: 500px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            animation: slideIn 0.8s ease-out;
+            padding: 30px 20px;
+            animation: fadeIn 0.8s ease-out;
         }
         
-        .welcome-card {
+        .welcome-section {
             background: var(--card-bg);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 40px 30px;
-            box-shadow: var(--shadow);
-            width: 100%;
-            text-align: center;
+            margin-bottom: 30px;
             border: 1px solid var(--card-border);
+            text-align: center;
+            box-shadow: var(--shadow);
             position: relative;
-            transition: var(--transition);
-            max-width: 450px;
-            animation: cardAppear 0.8s ease-out;
+            overflow: hidden;
+            animation: cardAppear 0.8s ease-out 0.2s both;
         }
 
-        .welcome-card::before {
+        .welcome-section::before {
             content: '';
             position: absolute;
             top: 0;
@@ -118,243 +107,148 @@
             width: 100%;
             height: 6px;
             background: linear-gradient(90deg, var(--primary-dark), var(--primary), var(--primary-light));
-            border-radius: 20px 20px 0 0;
-        }
-        
-        .logo {
-            font-size: 2.5rem;
-            font-weight: 900;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, var(--primary-light), var(--primary), var(--primary-dark));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            position: relative;
-            display: inline-block;
-            animation: logoPulse 2s infinite ease-in-out;
-        }
-
-        .logo::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--primary), var(--primary-light), transparent);
-            border-radius: 3px;
         }
         
         .welcome-title {
-            font-size: 1.5rem;
-            margin-bottom: 30px;
+            font-size: 2rem;
+            margin-bottom: 15px;
             color: var(--text);
             font-weight: 700;
-            line-height: 1.4;
+        }
+        
+        .welcome-subtitle {
+            color: var(--text-light);
+            font-size: 1.2rem;
+        }
+        
+        .content-section {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid var(--card-border);
+            box-shadow: var(--shadow);
+            animation: cardAppear 0.8s ease-out 0.4s both;
+        }
+        
+        .section-title {
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            color: var(--primary);
+            font-weight: 700;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--card-border);
             position: relative;
         }
 
-        .welcome-title::after {
+        .section-title::after {
             content: '';
             position: absolute;
-            bottom: -15px;
-            left: 25%;
-            width: 50%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--primary), transparent);
-            border-radius: 2px;
+            bottom: -2px;
+            right: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), transparent);
         }
         
-        .form-group {
-            margin-bottom: 30px;
-            text-align: right;
-            position: relative;
+        .apps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
         
-        label {
-            display: block;
-            margin-bottom: 12px;
-            color: var(--text);
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-        
-        .input-container {
-            position: relative;
-        }
-
-        input {
-            width: 100%;
-            padding: 16px 20px 16px 50px;
-            border: 2px solid rgba(161, 0, 26, 0.2);
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.9);
-            color: var(--text);
-            font-size: 1rem;
+        .app-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid var(--card-border);
             transition: var(--transition);
-            font-weight: 500;
-            animation: inputSlide 0.6s ease-out;
-        }
-
-        .dark-mode input {
-            background: rgba(15, 23, 42, 0.8);
-            border-color: rgba(161, 0, 26, 0.3);
-        }
-        
-        input:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 0 0 3px rgba(161, 0, 26, 0.15);
-            transform: translateY(-2px);
-        }
-
-        .dark-mode input:focus {
-            background: rgba(15, 23, 42, 0.9);
-            box-shadow: 0 0 0 3px rgba(161, 0, 26, 0.2);
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary);
-            font-size: 1.2rem;
-            transition: var(--transition);
-            z-index: 2;
-            animation: iconBounce 0.8s ease-out;
-        }
-
-        input:focus + .input-icon {
-            color: var(--primary-light);
-            transform: translateY(-50%) scale(1.1);
-            animation: iconPulse 1.5s infinite;
-        }
-
-        .error-message {
-            color: #ef4444;
-            font-size: 0.9rem;
-            margin-top: 8px;
-            text-align: right;
-            display: none;
-            animation: shake 0.5s ease-in-out;
-        }
-        
-        .btn {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            border: none;
-            padding: 16px 25px;
-            border-radius: 12px;
             cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: 700;
-            transition: var(--transition);
-            width: 100%;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(161, 0, 26, 0.3);
-            animation: buttonSlide 0.8s ease-out 0.2s both;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            animation: slideInRight 0.6s ease-out both;
         }
 
-        .dark-mode .btn {
-            box-shadow: 0 4px 15px rgba(161, 0, 26, 0.3);
-        }
-
-        .btn::before {
+        .app-card::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
-            width: 100%;
+            left: 0;
+            width: 6px;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
+            background: linear-gradient(to bottom, var(--primary-dark), var(--primary), var(--primary-light));
         }
         
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(161, 0, 26, 0.4);
-        }
-
-        .dark-mode .btn:hover {
-            box-shadow: 0 6px 20px rgba(161, 0, 26, 0.4);
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .btn:active {
-            transform: translateY(-1px);
+        .app-card:hover {
+            transform: translateX(-8px);
+            box-shadow: 0 6px 20px rgba(161, 0, 26, 0.2);
         }
         
-        .btn:disabled {
-            background: linear-gradient(135deg, #9ca3af, #6b7280);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .btn:disabled:hover::before {
-            left: -100%;
-        }
-
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--card-border);
-            border-radius: 30px;
+        .app-icon {
             width: 60px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: var(--shadow);
-            z-index: 1000;
-            animation: toggleAppear 0.8s ease-out;
-        }
-
-        .theme-toggle::before {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 26px;
-            height: 26px;
-            background: var(--primary);
-            border-radius: 50%;
-            transition: var(--transition);
-        }
-
-        .dark-mode .theme-toggle::before {
-            left: calc(100% - 28px);
-            background: var(--primary);
-        }
-
-        .theme-icon {
-            position: absolute;
+            height: 60px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 26px;
-            height: 26px;
-            transition: var(--transition);
+            font-size: 1.5rem;
+            color: white;
+            box-shadow: 0 4px 15px rgba(161, 0, 26, 0.3);
+            flex-shrink: 0;
         }
-
-        .sun-icon {
-            left: 2px;
-            color: #f59e0b;
+        
+        .app-content {
+            flex: 1;
         }
-
-        .moon-icon {
-            right: 2px;
-            color: #d1d5db;
+        
+        .app-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+        
+        .app-description {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .app-admin {
+            font-size: 0.9rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .empty-state, .loading {
+            text-align: center;
+            padding: 50px;
+            color: var(--text-light);
+        }
+        
+        .empty-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--card-border);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
         }
         
         footer {
@@ -363,20 +257,19 @@
             padding: 20px;
             text-align: center;
             border-top: 1px solid var(--card-border);
-            animation: footerSlide 0.8s ease-out 0.4s both;
+            animation: slideUp 0.8s ease-out 0.6s both;
         }
         
         .copyright {
             color: var(--text-light);
             font-size: 0.9rem;
-            font-weight: 500;
         }
 
         /* Animations */
-        @keyframes slideIn {
+        @keyframes slideDown {
             from {
                 opacity: 0;
-                transform: translateY(50px);
+                transform: translateY(-50px);
             }
             to {
                 opacity: 1;
@@ -384,10 +277,19 @@
             }
         }
 
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
         @keyframes cardAppear {
             from {
                 opacity: 0;
-                transform: scale(0.9) translateY(30px);
+                transform: scale(0.95) translateY(20px);
             }
             to {
                 opacity: 1;
@@ -395,19 +297,10 @@
             }
         }
 
-        @keyframes logoPulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-        }
-
-        @keyframes inputSlide {
+        @keyframes slideInRight {
             from {
                 opacity: 0;
-                transform: translateX(-20px);
+                transform: translateX(30px);
             }
             to {
                 opacity: 1;
@@ -415,7 +308,7 @@
             }
         }
 
-        @keyframes buttonSlide {
+        @keyframes slideUp {
             from {
                 opacity: 0;
                 transform: translateY(20px);
@@ -426,107 +319,75 @@
             }
         }
 
-        @keyframes iconBounce {
-            0% {
-                transform: translateY(-50%) scale(0);
-            }
-            70% {
-                transform: translateY(-50%) scale(1.2);
-            }
-            100% {
-                transform: translateY(-50%) scale(1);
-            }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        @keyframes iconPulse {
-            0%, 100% {
-                transform: translateY(-50%) scale(1.1);
+        /* تحسينات للشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
             }
-            50% {
-                transform: translateY(-50%) scale(1.3);
+            
+            .welcome-section {
+                padding: 30px 20px;
             }
-        }
+            
+            .content-section {
+                padding: 25px 20px;
+            }
+            
+            .app-card {
+                padding: 20px;
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
 
-        @keyframes toggleAppear {
-            from {
-                opacity: 0;
-                transform: scale(0) rotate(-180deg);
+            .app-card::before {
+                width: 100%;
+                height: 4px;
             }
-            to {
-                opacity: 1;
-                transform: scale(1) rotate(0);
+            
+            .app-card:hover {
+                transform: translateY(-5px);
             }
-        }
-
-        @keyframes footerSlide {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes shake {
-            0%, 100% {
-                transform: translateX(0);
-            }
-            25% {
-                transform: translateX(-5px);
-            }
-            75% {
-                transform: translateX(5px);
+            
+            .app-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 1.8rem;
             }
         }
 
         @media (max-width: 480px) {
-            .container {
-                padding: 15px;
-            }
-            
-            .welcome-card {
-                padding: 30px 20px;
-                border-radius: 16px;
+            .header {
+                padding: 20px 15px;
             }
             
             .logo {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
             
             .welcome-title {
-                font-size: 1.3rem;
-                margin-bottom: 25px;
-            }
-
-            .theme-toggle {
-                top: 15px;
-                left: 15px;
+                font-size: 1.6rem;
             }
             
-            input {
-                padding: 14px 16px 14px 45px;
-                font-size: 0.95rem;
-            }
-            
-            .btn {
-                padding: 14px 20px;
+            .welcome-subtitle {
                 font-size: 1rem;
             }
-        }
-
-        @media (min-width: 481px) and (max-width: 768px) {
-            .welcome-card {
-                padding: 35px 25px;
-            }
             
-            .logo {
-                font-size: 2.2rem;
-            }
-            
-            .welcome-title {
+            .section-title {
                 font-size: 1.4rem;
+            }
+            
+            .app-name {
+                font-size: 1.2rem;
+            }
+            
+            .app-description {
+                font-size: 0.95rem;
             }
         }
     </style>
@@ -534,34 +395,25 @@
 <body>
     <div class="bg-grid"></div>
 
-    <div class="theme-toggle" id="themeToggle">
-        <div class="theme-icon sun-icon">
-            <i class="fas fa-sun"></i>
-        </div>
-        <div class="theme-icon moon-icon">
-            <i class="fas fa-moon"></i>
-        </div>
+    <div class="header">
+        <div class="logo">منصة محاضراتي</div>
     </div>
     
     <div class="container">
-        <div class="welcome-card">
-            <div class="logo">محاضراتي</div>
-            <h1 class="welcome-title">مرحباً بك في المنصة التعليمية المتطورة</h1>
+        <div class="welcome-section">
+            <h1 class="welcome-title">مرحباً بك في المنصة التعليمية</h1>
+            <p class="welcome-subtitle">استكشف التطبيقات التعليمية المتاحة</p>
+        </div>
+        
+        <div class="content-section">
+            <h2 class="section-title">التطبيقات التعليمية</h2>
             
-            <div class="form-group">
-                <label for="userName">أدخل اسمك للبدء</label>
-                <div class="input-container">
-                    <input type="text" id="userName" placeholder="اكتب اسمك هنا...">
-                    <div class="input-icon">
-                        <i class="fas fa-user"></i>
-                    </div>
+            <div id="appsList" class="apps-container">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <div>جاري تحميل التطبيقات...</div>
                 </div>
-                <div class="error-message" id="nameError"></div>
             </div>
-            
-            <button id="startBtn" class="btn">
-                <span>بدء الاستخدام</span>
-            </button>
         </div>
     </div>
     
@@ -570,6 +422,7 @@
     </footer>
 
     <script>
+        // تهيئة Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAoxrR7OvzDppT5LxYVoZTLCFvTeyDqPkQ",
             authDomain: "mo7adraty-1636d.firebaseapp.com",
@@ -579,143 +432,84 @@
         };
         
         firebase.initializeApp(firebaseConfig);
-        
-        const themeToggle = document.getElementById('themeToggle');
-        
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            document.body.classList.add('dark-mode');
-        }
-        
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            
-            if (document.body.classList.contains('dark-mode')) {
-                localStorage.setItem('darkMode', 'enabled');
-            } else {
-                localStorage.setItem('darkMode', 'disabled');
-            }
-        });
 
-        // التحقق من وجود اسم المستخدم في localStorage
+        // تحميل التطبيقات
+        function loadApps() {
+            const database = firebase.database();
+            const appsList = document.getElementById('appsList');
+            
+            database.ref('programs').once('value')
+                .then((snapshot) => {
+                    const programs = snapshot.val();
+                    appsList.innerHTML = '';
+                    
+                    if (!programs) {
+                        appsList.innerHTML = `
+                            <div class="empty-state">
+                                <div class="empty-icon">📱</div>
+                                <h3>لا توجد تطبيقات حتى الآن</h3>
+                                <p>سيتم إضافة التطبيقات قريباً</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    // تحويل الكائن إلى مصفوفة وإضافة تأخير للأنيميشن
+                    const programsArray = Object.entries(programs);
+                    
+                    programsArray.forEach(([programId, program], index) => {
+                        setTimeout(() => {
+                            const appCard = document.createElement('div');
+                            appCard.className = 'app-card';
+                            appCard.style.animationDelay = `${index * 0.1}s`;
+                            appCard.onclick = () => {
+                                window.location.href = `sub.html?program=${programId}`;
+                            };
+                            
+                            appCard.innerHTML = `
+                                <div class="app-icon">📱</div>
+                                <div class="app-content">
+                                    <div class="app-name">${program.name}</div>
+                                    <div class="app-description">${program.description || 'لا يوجد وصف'}</div>
+                                    <div class="app-admin">
+                                        <span>👤</span>
+                                        منشئ المحتوى: ${program.ad}
+                                    </div>
+                                </div>
+                            `;
+                            
+                            appsList.appendChild(appCard);
+                        }, index * 100);
+                    });
+                })
+                .catch((error) => {
+                    console.error("خطأ في تحميل التطبيقات:", error);
+                    appsList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">⚠️</div>
+                            <h3>حدث خطأ في تحميل التطبيقات</h3>
+                            <p>يرجى تحديث الصفحة والمحاولة مرة أخرى</p>
+                        </div>
+                    `;
+                });
+        }
+
+        // تحميل التطبيقات عند فتح الصفحة
         document.addEventListener('DOMContentLoaded', () => {
-            const userName = localStorage.getItem('userName');
-            if (userName && userName.trim() !== '') {
-                // إذا كان هناك اسم، انتقل إلى الصفحة الرئيسية
-                window.location.href = 'app.html';
-            }
-            // إذا لم يكن هناك اسم، يبقى المستخدم في هذه الصفحة
+            loadApps();
         });
         
-        async function getUserIP() {
-            try {
-                const response = await fetch('https://api.ipify.org?format=json');
-                const data = await response.json();
-                return data.ip;
-            } catch (error) {
-                return 'unknown';
+        // تحديث وقت النشاط الأخير
+        function updateLastActive() {
+            const userId = localStorage.getItem('userId');
+            if (userId) {
+                const database = firebase.database();
+                database.ref('users/' + userId + '/lastActive').set(new Date().toISOString());
             }
         }
         
-        async function checkUserNameExists(userName) {
-            const database = firebase.database();
-            
-            try {
-                const snapshot = await database.ref('users').orderByChild('name').equalTo(userName).once('value');
-                return snapshot.exists();
-            } catch (error) {
-                console.error("خطأ في التحقق من الاسم:", error);
-                return false;
-            }
-        }
-        
-        async function saveUserData(userName) {
-            const database = firebase.database();
-            const userIP = await getUserIP();
-            const userId = 'user_' + Date.now();
-            
-            database.ref('users/' + userId).set({
-                name: userName,
-                ip: userIP,
-                joinDate: new Date().toISOString(),
-                lastActive: new Date().toISOString()
-            })
-            .then(() => {
-                localStorage.setItem('userName', userName);
-                localStorage.setItem('userId', userId);
-                window.location.href = 'app.html';
-            })
-            .catch((error) => {
-                alert("حدث خطأ أثناء حفظ البيانات. يرجى المحاولة مرة أخرى.");
-                const btn = document.getElementById('startBtn');
-                btn.innerHTML = '<span>بدء الاستخدام</span>';
-                btn.disabled = false;
-            });
-        }
-        
-        document.getElementById('startBtn').addEventListener('click', async () => {
-            const userName = document.getElementById('userName').value.trim();
-            const errorElement = document.getElementById('nameError');
-            
-            errorElement.style.display = 'none';
-            
-            if (!userName) {
-                errorElement.textContent = 'يرجى إدخال اسمك للمتابعة';
-                errorElement.style.display = 'block';
-                return;
-            }
-            
-            const nameRegex = /^[a-zA-Z0-9]+$/;
-            if (!nameRegex.test(userName)) {
-                errorElement.textContent = 'يجب أن يحتوي الاسم على أحرف إنجليزية وأرقام فقط، بدون مسافات أو رموز خاصة';
-                errorElement.style.display = 'block';
-                return;
-            }
-            
-            if (userName.length < 2) {
-                errorElement.textContent = 'الاسم يجب أن يكون على الأقل حرفين';
-                errorElement.style.display = 'block';
-                return;
-            }
-            
-            const btn = document.getElementById('startBtn');
-            btn.innerHTML = '<span>جاري التحقق...</span>';
-            btn.disabled = true;
-            
-            try {
-                const nameExists = await checkUserNameExists(userName);
-                
-                if (nameExists) {
-                    errorElement.textContent = 'هذا الاسم مستخدم بالفعل، يرجى اختيار اسم آخر';
-                    errorElement.style.display = 'block';
-                    btn.innerHTML = '<span>بدء الاستخدام</span>';
-                    btn.disabled = false;
-                    return;
-                }
-                
-                btn.innerHTML = '<span>جاري التحميل...</span>';
-                saveUserData(userName);
-            } catch (error) {
-                errorElement.textContent = 'حدث خطأ أثناء التحقق من الاسم، يرجى المحاولة مرة أخرى';
-                errorElement.style.display = 'block';
-                btn.innerHTML = '<span>بدء الاستخدام</span>';
-                btn.disabled = false;
-            }
-        });
-        
-        document.getElementById('userName').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                document.getElementById('startBtn').click();
-            }
-        });
-        
-        // منع العودة لصفحة التطبيق إذا لم يكن هناك اسم
-        window.history.pushState(null, null, window.location.href);
-        window.onpopstate = function() {
-            const userName = localStorage.getItem('userName');
-            if (!userName || userName.trim() === '') {
-                window.history.go(1);
-            }
-        };
+        setInterval(updateLastActive, 60000);
+        updateLastActive();
     </script>
 </body>
 </html>
