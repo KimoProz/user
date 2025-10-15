@@ -9,27 +9,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #304FFE;
-            --primary-light: #536DFE;
-            --primary-dark: #1A237E;
+            --primary: #A1001A;
+            --primary-light: #C2182B;
+            --primary-dark: #7A0014;
             --text: #1f2937;
             --text-light: #6b7280;
-            --bg: #f8fafc;
-            --card-bg: rgba(255, 255, 255, 0.95);
-            --card-border: rgba(48, 79, 254, 0.15);
+            --bg: #FFFFFF;
+            --card-bg: rgba(255, 255, 255, 0.98);
+            --card-border: rgba(161, 0, 26, 0.15);
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
         }
 
         .dark-mode {
-            --primary: #7C3AED;
-            --primary-light: #8B5CF6;
-            --primary-dark: #5B21B6;
+            --primary: #3B82F6;
+            --primary-light: #60A5FA;
+            --primary-dark: #2563EB;
             --text: #f9fafb;
             --text-light: #d1d5db;
-            --bg: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.9);
-            --card-border: rgba(124, 58, 237, 0.3);
+            --bg: #0F172A;
+            --card-bg: rgba(15, 23, 42, 0.95);
+            --card-border: rgba(59, 130, 246, 0.3);
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
 
@@ -69,8 +69,8 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(48, 79, 254, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(48, 79, 254, 0.05) 1px, transparent 1px);
+                linear-gradient(rgba(161, 0, 26, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(161, 0, 26, 0.05) 1px, transparent 1px);
             background-size: 40px 40px;
             z-index: -1;
             opacity: 0.5;
@@ -78,8 +78,8 @@
 
         .dark-mode .bg-grid {
             background-image: 
-                linear-gradient(rgba(124, 58, 237, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(124, 58, 237, 0.05) 1px, transparent 1px);
+                linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
         }
         
         .container {
@@ -183,7 +183,7 @@
         input {
             width: 100%;
             padding: 16px 20px 16px 50px;
-            border: 2px solid rgba(48, 79, 254, 0.2);
+            border: 2px solid rgba(161, 0, 26, 0.2);
             border-radius: 12px;
             background: rgba(255, 255, 255, 0.9);
             color: var(--text);
@@ -193,20 +193,20 @@
         }
 
         .dark-mode input {
-            background: rgba(30, 41, 59, 0.8);
-            border-color: rgba(124, 58, 237, 0.3);
+            background: rgba(15, 23, 42, 0.8);
+            border-color: rgba(59, 130, 246, 0.3);
         }
         
         input:focus {
             outline: none;
             border-color: var(--primary);
             background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 0 0 3px rgba(48, 79, 254, 0.15);
+            box-shadow: 0 0 0 3px rgba(161, 0, 26, 0.15);
         }
 
         .dark-mode input:focus {
-            background: rgba(30, 41, 59, 0.9);
-            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
         }
 
         .input-icon {
@@ -246,11 +246,11 @@
             width: 100%;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(48, 79, 254, 0.3);
+            box-shadow: 0 4px 15px rgba(161, 0, 26, 0.3);
         }
 
         .dark-mode .btn {
-            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
         }
 
         .btn::before {
@@ -266,11 +266,11 @@
         
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(48, 79, 254, 0.4);
+            box-shadow: 0 6px 20px rgba(161, 0, 26, 0.4);
         }
 
         .dark-mode .btn:hover {
-            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
         }
 
         .btn:hover::before {
