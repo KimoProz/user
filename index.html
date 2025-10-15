@@ -599,13 +599,11 @@
         // التحقق من وجود اسم المستخدم في localStorage
         document.addEventListener('DOMContentLoaded', () => {
             const userName = localStorage.getItem('userName');
-            if (!userName) {
-                // إذا لم يكن هناك اسم، تأكد من أن المستخدم في هذه الصفحة
-                return;
+            if (userName && userName.trim() !== '') {
+                // إذا كان هناك اسم، انتقل إلى الصفحة الرئيسية
+                window.location.href = 'app.html';
             }
-            
-            // إذا كان هناك اسم، انتقل إلى الصفحة الرئيسية
-            window.location.href = 'app.html';
+            // إذا لم يكن هناك اسم، يبقى المستخدم في هذه الصفحة
         });
         
         async function getUserIP() {
@@ -714,7 +712,7 @@
         window.history.pushState(null, null, window.location.href);
         window.onpopstate = function() {
             const userName = localStorage.getItem('userName');
-            if (!userName) {
+            if (!userName || userName.trim() === '') {
                 window.history.go(1);
             }
         };
